@@ -8,4 +8,16 @@ const handlePositionArrow = (entry_rank: number, entry_last_rank: number) => {
   return <span className="text-red-500">&#8595;</span>;
 };
 
-export { handlePositionArrow };
+const formatter = new Intl.DateTimeFormat("en-US", {
+  hour: "numeric",
+  hour12: false,
+  minute: "numeric",
+  day: "numeric",
+  month: "short",
+  weekday: "long",
+});
+
+const formatted_last_updated = (date: string) =>
+  formatter.format(new Date(date));
+
+export { handlePositionArrow, formatted_last_updated };

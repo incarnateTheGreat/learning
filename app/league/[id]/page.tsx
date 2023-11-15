@@ -1,4 +1,8 @@
-import { handlePositionArrow } from "learning/app/utils";
+import {
+  formatted_last_updated,
+  handlePositionArrow,
+} from "learning/app/utils";
+import { Suspense } from "react";
 
 type Result = {
   id: number;
@@ -46,59 +50,52 @@ const League = async ({ params: { id } }: League) => {
     standings: { results },
   } = standingsData;
 
-  const formatter = new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    hour12: false,
-    minute: "numeric",
-    day: "numeric",
-    month: "short",
-    weekday: "long",
-  });
-
-  const formatted_last_updated = formatter.format(new Date(last_updated_data));
-
   return (
-    <div className="mx-auto my-4 table w-4/5 text-sm md:max-w-[800px] md:text-base">
-      <h1 className="table-caption text-xl font-semibold">{name}</h1>
-      <h2 className="mb-2 table-caption">
-        Last Updated: {formatted_last_updated}
-      </h2>
-      <div className="table-header-group">
-        <div className="table-cell font-semibold">Rank</div>
-        <div className="table-cell font-semibold">Team &amp; Manager</div>
-        <div className="table-cell text-center font-semibold">GW</div>
-        <div className="table-cell text-right font-semibold">TOT</div>
-      </div>
-      {results.map((result: Result) => {
-        const {
-          id,
-          player_name,
-          entry_name,
-          rank,
-          last_rank,
-          total,
-          event_total,
-        } = result;
+    <Suspense fallback={<h2>Loading league...</h2>}>
+      <div className="mx-auto my-4 table w-[90%] text-sm md:w-4/5 md:max-w-[800px] md:text-base">
+        <h1 className="table-caption text-xl font-semibold">{name}</h1>
+        <h2 className="mb-2 table-caption">
+          Last Updated: {formatted_last_updated(last_updated_data)}
+        </h2>
+        <div className="table-header-group">
+          <div className="table-cell pl-2 font-semibold">Rank</div>
+          <div className="table-cell font-semibold">Team &amp; Manager</div>
+          <div className="table-cell text-center font-semibold">GW</div>
+          <div className="table-cell pr-2 text-right font-semibold">TOT</div>
+        </div>
+        {results.map((result: Result) => {
+          const {
+            id,
+            player_name,
+            entry_name,
+            rank,
+            last_rank,
+            total,
+            event_total,
+          } = result;
 
-        return (
-          <div key={id} className="table-row odd:bg-gray-800">
-            <div className="table-cell">
-              <div className="flex">
-                <span className="mr-2 min-w-[14px]">
-                  {handlePositionArrow(rank, last_rank)}
-                </span>
-                <span>{rank}</span>
+          return (
+            <div key={id} className="table-row odd:bg-gray-800">
+              <div className="table-cell w-[70px] pl-2">
+                <div className="flex">
+                  <span className="mr-2 min-w-[14px]">
+                    {handlePositionArrow(rank, last_rank)}
+                  </span>
+                  <span>{rank}</span>
+                </div>
               </div>
+              <div className="table-cell">
+                {entry_name} / {player_name}
+              </div>
+              <div className="table-cell w-[50px] text-center">
+                {event_total}
+              </div>
+              <div className="table-cell pr-2 text-right">{total}</div>
             </div>
-            <div className="table-cell">
-              {entry_name} / {player_name}
-            </div>
-            <div className="table-cell text-center">{event_total}</div>
-            <div className="table-cell text-right">{total}</div>
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+    </Suspense>
   );
 };
 
