@@ -39,7 +39,7 @@ type LeaguesList = {
 
 async function loadLeagueData(id: number) {
   const res: Response = await fetch(
-    `https://fantasy.premierleague.com/api/entry/${id}/`
+    `https://fantasy.premierleague.com/api/entry/${id}/`,
   );
 
   const resJson: FPLResponse = await res.json();
@@ -64,19 +64,20 @@ const LeagueList = async ({ id }: LeaguesList) => {
   } = leagueData;
 
   const invitationalClassicLeagues = classic.filter(
-    (league) => league.league_type === "x"
+    (league) => league.league_type === "x",
   );
 
   return (
-    <div className="post-list w-1/3 mr-4 last:mr-0">
-      <h1 className="text-xl border-b font-semibold mb-4">
-        {name} ({summary_event_points})
+    <div className="mr-4 w-full last:mr-0 md:w-1/3">
+      <h1 className="mb-4 border-b text-xl font-semibold">
+        <span className="mr-2">{name}</span>
+        <span>({summary_event_points})</span>
       </h1>
       {invitationalClassicLeagues.map((league: LeagueData) => {
         const { id, name, entry_rank, entry_last_rank } = league;
 
         return (
-          <div key={id} className="post-listing mb-4">
+          <div key={id} className="mb-4">
             <Link href={`/league/${id}`}>
               <h2 className="post-title text-md font-semibold">{name}</h2>
             </Link>
