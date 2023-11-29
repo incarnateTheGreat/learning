@@ -4,72 +4,85 @@ import {
   formatted_last_updated,
   handlePositionArrow,
 } from "learning/app/utils";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
-type League = {
+type LeagueProps = {
   params: {
     id: number[];
   };
 };
 
-const League = async ({ params }: League) => {
+type NavButtonProps = {
+  page: number;
+  id: number;
+};
+
+const PrevButton = async ({ page, id }: NavButtonProps) => {
+  return (
+    <form
+      action={async () => {
+        "use server";
+
+        let prev_page = page;
+
+        prev_page -= 1;
+
+        if (prev_page === 1) {
+          redirect(`/league/${id}`);
+        } else {
+          redirect(`/league/${id}/${prev_page}`);
+        }
+      }}
+    >
+      <button>Prev</button>
+    </form>
+  );
+};
+
+const NextButton = async ({ page, id }: NavButtonProps) => {
+  console.log("Next button click.");
+
+  return (
+    <form
+      className={page === 1 ? "ml-auto" : ""}
+      action={async () => {
+        "use server";
+
+        let next_page = page;
+
+        next_page += 1;
+
+        console.log("Next button server action.");
+
+        redirect(`/league/${id}/${next_page}`);
+      }}
+    >
+      <button>Next</button>
+    </form>
+  );
+};
+
+const League = async ({ params }: LeagueProps) => {
+  // console.log("League.");
+
   const [id, page_number = 1] = params.id;
 
   const standingsData = await loadStandings(id, page_number);
+
   const {
     last_updated_data,
     league: { name },
     standings: { results, page, has_next },
   } = standingsData;
 
-  console.log(standingsData);
-
   return (
     <Suspense fallback={<h2>Loading league...</h2>}>
       <article className="mx-auto my-4 w-[90%] text-sm md:w-4/5 md:max-w-[800px] md:text-base">
         <div className="flex justify-between">
-          {page > 1 ? (
-            <form
-              action={async () => {
-                "use server";
-
-                let prev_page = page;
-
-                prev_page -= 1;
-
-                if (prev_page === 1) {
-                  redirect(`/league/${id}`);
-                } else {
-                  redirect(`/league/${id}/${prev_page}`);
-                }
-              }}
-            >
-              <div className="flex">
-                <button>Prev</button>
-              </div>
-            </form>
-          ) : null}
-
-          {has_next ? (
-            <form
-              className={page === 1 ? "ml-auto" : ""}
-              action={async () => {
-                "use server";
-
-                let next_page = page;
-
-                if (has_next) {
-                  next_page += 1;
-                  redirect(`/league/${id}/${next_page}`);
-                }
-              }}
-            >
-              <div className="flex">
-                <button>Next</button>
-              </div>
-            </form>
-          ) : null}
+          {page > 1 ? <PrevButton page={page} id={id} /> : null}
+          {has_next ? <NextButton page={page} id={id} /> : null}
         </div>
 
         <div className="table w-full">
@@ -100,8 +113,11 @@ const League = async ({ params }: League) => {
                   rank,
                   last_rank,
                   total,
+                  entry,
                   event_total,
                 } = result;
+
+                const link = `/player/${entry}`;
 
                 return (
                   <div key={id} className="table-row odd:bg-gray-800">
@@ -113,9 +129,9 @@ const League = async ({ params }: League) => {
                         <span>{rank}</span>
                       </div>
                     </div>
-                    <div className="table-cell w-[25%]">
+                    <Link href={link} className="table-cell w-[25%]">
                       {entry_name} / {player_name}
-                    </div>
+                    </Link>
                     <div className="table-cell w-[5%] text-center">
                       {event_total}
                     </div>
