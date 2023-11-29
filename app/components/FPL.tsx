@@ -44,7 +44,7 @@ async function loadLeagueData(id: number) {
 
   const resJson: FPLResponse = await res.json();
 
-  return resJson ?? [];
+  return resJson;
 }
 
 const numFormatter = (val: number) => {
