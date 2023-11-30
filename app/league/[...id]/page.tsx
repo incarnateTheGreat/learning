@@ -79,7 +79,10 @@ const League = async ({ params }: LeagueProps) => {
 
   return (
     <Suspense fallback={<h2>Loading league...</h2>}>
-      <article className="mx-auto my-4 w-[90%] text-sm md:w-4/5 md:max-w-[800px] md:text-base">
+      <section className="mx-auto my-4 w-[90%] text-sm md:w-4/5 md:max-w-[800px] md:text-base">
+        <Link href="/" className="mb-8 flex">
+          &laquo; Back to Home
+        </Link>
         <div className="flex justify-between">
           {page > 1 ? <PrevButton page={page} id={id} /> : null}
           {has_next ? <NextButton page={page} id={id} /> : null}
@@ -129,7 +132,10 @@ const League = async ({ params }: LeagueProps) => {
                         <span>{rank}</span>
                       </div>
                     </div>
-                    <Link href={link} className="table-cell w-[25%]">
+                    <Link
+                      href={link}
+                      className="table-cell w-[25%] hover:text-gray-300"
+                    >
                       {entry_name} / {player_name}
                     </Link>
                     <div className="table-cell w-[5%] text-center">
@@ -141,7 +147,7 @@ const League = async ({ params }: LeagueProps) => {
               })
             : null}
         </div>
-      </article>
+      </section>
     </Suspense>
   );
 };
