@@ -1,6 +1,7 @@
 import {
   ListOfPlayers,
   ListOfPlayersResponse,
+  ManagerInfoResponse,
   PlayerPicksResponse,
 } from "learning/app/lib/types";
 import { useEventStore } from "learning/app/store/eventStore";
@@ -30,13 +31,23 @@ type PlayersProps = {
 };
 
 const Players = ({ players }: PlayersProps) => {
-  return Object.keys(POSITIONS).map((position) => (
-    <TableRow
-      key={position}
-      playerData={players[POSITIONS[position]]}
-      label={POSITIONS[position]}
-    />
-  ));
+  return Object.keys(POSITIONS).map((position) => {
+    console.log(players[POSITIONS[position]]?.length);
+
+    if (
+      players[POSITIONS[position]]?.length === 0 ||
+      !players[POSITIONS[position]]
+    )
+      return;
+
+    return (
+      <TableRow
+        key={position}
+        playerData={players[POSITIONS[position]]}
+        label={POSITIONS[position]}
+      />
+    );
+  });
 };
 
 const TableRow = ({ playerData, label }: TableRowProps) => {
@@ -80,13 +91,18 @@ async function getPlayers(entry = 0) {
     fetch(
       `https://fantasy.premierleague.com/api/entry/${entry}/event/${currentEvent}/picks/`,
     ),
+    fetch(`https://fantasy.premierleague.com/api/entry/${entry}`),
     fetch("https://fantasy.premierleague.com/api/bootstrap-static/"),
   ];
 
-  const [playerPicksResponse, listOfAllPlayersResponse]: Response[] =
-    await Promise.all(fetchPlayerDataUrls);
+  const [
+    playerPicksResponse,
+    managerInfoResponse,
+    listOfAllPlayersResponse,
+  ]: Response[] = await Promise.all(fetchPlayerDataUrls);
 
   const playerPicks: PlayerPicksResponse = await playerPicksResponse.json();
+  const managerInfo: ManagerInfoResponse = await managerInfoResponse.json();
   const listOfAllPlayers: ListOfPlayersResponse =
     await listOfAllPlayersResponse.json();
 
@@ -99,11 +115,12 @@ async function getPlayers(entry = 0) {
     (acc, elem) => {
       const position = POSITIONS[elem.element_type];
 
-      const onField = playerPicks.picks.find(
+      const playerFieldData = playerPicks.picks.find(
         (player) => player.element === elem.id,
       );
 
-      if (onField.position <= 11) {
+      // Starters
+      if (playerFieldData.position <= 11) {
         if (acc.starters[position]) {
           acc.starters[position].push(elem);
         } else {
@@ -111,7 +128,8 @@ async function getPlayers(entry = 0) {
         }
       }
 
-      if (onField.position >= 12) {
+      // Reserves
+      if (playerFieldData.position >= 12) {
         if (acc.reserves[position]) {
           acc.reserves[position].push(elem);
         } else {
@@ -133,7 +151,10 @@ async function getPlayers(entry = 0) {
         &laquo; Back
       </Link>
       <h1 className="mb-8 border-b-2 border-gray-400 text-4xl font-semibold">
-        USER
+        {managerInfo.name} /
+        <span className="ml-2 text-2xl font-normal">
+          {managerInfo.player_first_name} {managerInfo.player_last_name}
+        </span>
       </h1>
       <h2 className="mb-8 text-xl font-medium">Gameweek {currentEvent}</h2>
       <article className="flex w-full flex-col-reverse px-1.5 py-1 md:flex-row">

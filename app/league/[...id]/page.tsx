@@ -65,8 +65,6 @@ const NextButton = async ({ page, id }: NavButtonProps) => {
 };
 
 const League = async ({ params }: LeagueProps) => {
-  // console.log("League.");
-
   const [id, page_number = 1] = params.id;
 
   const standingsData = await loadStandings(id, page_number);
@@ -78,7 +76,13 @@ const League = async ({ params }: LeagueProps) => {
   } = standingsData;
 
   return (
-    <Suspense fallback={<h2>Loading league...</h2>}>
+    <Suspense
+      fallback={
+        <div className="mx-auto my-4 w-[90%] text-sm md:w-4/5 md:max-w-[800px] md:text-base">
+          <h2>Loading league...</h2>
+        </div>
+      }
+    >
       <section className="mx-auto my-4 w-[90%] text-sm md:w-4/5 md:max-w-[800px] md:text-base">
         <Link href="/" className="mb-8 flex">
           &laquo; Back to Home
@@ -89,9 +93,10 @@ const League = async ({ params }: LeagueProps) => {
         </div>
 
         <div className="table w-full">
-          <h1 className="table-caption text-xl font-semibold">{name}</h1>
-          <h2 className="mb-2 table-caption">
-            Last Updated: {formatted_last_updated(last_updated_data)}
+          <h1 className="table-caption text-2xl font-semibold">{name}</h1>
+          <h2 className="mb-5 table-caption text-sm">
+            Last Updated: {formatted_last_updated(last_updated_data)} (local
+            time)
           </h2>
 
           {results.length > 0 ? (

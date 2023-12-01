@@ -68,7 +68,7 @@ const LeagueList = async ({ id }: LeaguesList) => {
   );
 
   return (
-    <div className="mr-4 w-full last:mr-0 md:w-1/3">
+    <div className="mr-4 w-full rounded border border-gray-800 bg-gray-800 p-4 last:mr-0 md:w-1/3">
       <h1 className="mb-4 border-b text-xl font-semibold">
         <span className="mr-2">{name}</span>
         <span>({summary_event_points})</span>
@@ -78,7 +78,7 @@ const LeagueList = async ({ id }: LeaguesList) => {
 
         return (
           <div key={id} className="mb-4">
-            <Link href={`/league/${id}`}>
+            <Link href={`/league/${id}`} className="hover:text-gray-300">
               <h2 className="post-title text-md font-semibold">{name}</h2>
             </Link>
             <p className="post-body">{numFormatter(entry_rank)}</p>
