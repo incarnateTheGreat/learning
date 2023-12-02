@@ -1,3 +1,4 @@
+import { unstable_noStore as noStore } from "next/cache";
 import { loadStandings } from "learning/app/lib/actions";
 import { Result } from "learning/app/lib/types";
 import {
@@ -42,8 +43,6 @@ const PrevButton = async ({ page, id }: NavButtonProps) => {
 };
 
 const NextButton = async ({ page, id }: NavButtonProps) => {
-  console.log("Next button click.");
-
   return (
     <form
       className={page === 1 ? "ml-auto" : ""}
@@ -54,8 +53,6 @@ const NextButton = async ({ page, id }: NavButtonProps) => {
 
         next_page += 1;
 
-        console.log("Next button server action.");
-
         redirect(`/league/${id}/${next_page}`);
       }}
     >
@@ -65,6 +62,8 @@ const NextButton = async ({ page, id }: NavButtonProps) => {
 };
 
 const League = async ({ params }: LeagueProps) => {
+  noStore();
+
   const [id, page_number = 1] = params.id;
 
   const standingsData = await loadStandings(id, page_number);

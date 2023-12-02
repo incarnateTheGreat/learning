@@ -1,3 +1,5 @@
+import { unstable_noStore as noStore } from "next/cache";
+
 import {
   ListOfPlayers,
   ListOfPlayersResponse,
@@ -9,6 +11,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { headers } from "next/headers";
+import { eventStatus } from "learning/app/lib/actions";
 
 type PlayerProps = {
   params: { entry: number[] };
@@ -32,8 +35,6 @@ type PlayersProps = {
 
 const Players = ({ players }: PlayersProps) => {
   return Object.keys(POSITIONS).map((position) => {
-    console.log(players[POSITIONS[position]]?.length);
-
     if (
       players[POSITIONS[position]]?.length === 0 ||
       !players[POSITIONS[position]]
@@ -84,8 +85,19 @@ async function getPlayers(entry = 0) {
   const headersList = headers();
   const referer = headersList.get("referer") ?? "/";
 
-  const currentEvent = useEventStore.getState().currentEvent;
-  // const currentEvent = 13;
+  let currentEvent = useEventStore.getState().currentEvent;
+
+  if (!currentEvent) {
+    if (!currentEvent) {
+      currentEvent = await eventStatus();
+
+      if (!useEventStore.getState().currentEvent) {
+        useEventStore.setState(() => ({
+          currentEvent,
+        }));
+      }
+    }
+  }
 
   const fetchPlayerDataUrls = [
     fetch(
@@ -111,6 +123,8 @@ async function getPlayers(entry = 0) {
     teamPlayerIds.includes(player.id),
   );
 
+  let event_points = 0;
+
   const rosterResult = roster.reduce(
     (acc, elem) => {
       const position = POSITIONS[elem.element_type];
@@ -126,6 +140,8 @@ async function getPlayers(entry = 0) {
         } else {
           acc.starters[position] = [elem];
         }
+
+        event_points += elem.event_points;
       }
 
       // Reserves
@@ -170,7 +186,7 @@ async function getPlayers(entry = 0) {
         </div>
         <div className="flex flex-1 flex-col items-center md:mt-24 md:basis-2/4 md:items-end">
           <div className="rounded-2xl border-2 bg-gray-900 p-10 text-7xl font-semibold">
-            {playerPicks.entry_history.points}
+            {event_points}
           </div>
         </div>
       </article>
@@ -179,6 +195,8 @@ async function getPlayers(entry = 0) {
 }
 
 const Player = async ({ params: { entry } }: PlayerProps) => {
+  noStore();
+
   const players = await getPlayers(entry.at(0));
 
   return (
