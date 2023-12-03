@@ -127,7 +127,7 @@ const League = async ({ params }: LeagueProps) => {
                 const link = `/player/${entry}`;
 
                 return (
-                  <div key={id} className="table-row odd:bg-gray-800">
+                  <div key={id} className="table-row even:bg-gray-800">
                     <div className="table-cell w-[5%] pl-2">
                       <div className="flex">
                         <span className="mr-2 min-w-[14px]">
