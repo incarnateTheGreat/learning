@@ -11,17 +11,11 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { headers } from "next/headers";
-import { eventStatus } from "learning/app/lib/actions";
+import { POSITIONS, TEAMS } from "learning/app/utils/constants";
+import { getCurrentEvent } from "learning/app/utils";
 
 type PlayerProps = {
   params: { entry: number[] };
-};
-
-const POSITIONS = {
-  "1": "Goalkeepers",
-  "2": "Defenders",
-  "3": "Midfielders",
-  "4": "Forwards",
 };
 
 type TableRowProps = {
@@ -59,14 +53,16 @@ const TableRow = ({ playerData, label }: TableRowProps) => {
       </div>
       {playerData?.length > 0 ? (
         playerData.map((player) => {
-          const { id, web_name, event_points } = player;
+          const { id, team, web_name, event_points } = player;
+          const team_name = TEAMS[team]?.name ?? "N/A";
 
           return (
             <div key={id} className="table-row bg-gray-800">
-              <div className="table-cell w-1/2 border-b border-gray-400 px-2 py-1">
-                {web_name}
+              <div className="table-cell border-b border-gray-400 px-2 py-1">
+                {web_name}{" "}
+                <span className="text-sm text-gray-200">({team_name})</span>
               </div>
-              <div className="table-cell w-1/2 border-b border-gray-400 px-2 py-1 text-right font-semibold">
+              <div className="table-cell border-b border-gray-400 px-2 py-1 text-right font-semibold">
                 {event_points}
               </div>
             </div>
@@ -81,24 +77,7 @@ const TableRow = ({ playerData, label }: TableRowProps) => {
   );
 };
 
-async function getPlayers(entry = 0) {
-  const headersList = headers();
-  const referer = headersList.get("referer") ?? "/";
-
-  let currentEvent = useEventStore.getState().currentEvent;
-
-  if (!currentEvent) {
-    if (!currentEvent) {
-      currentEvent = await eventStatus();
-
-      if (!useEventStore.getState().currentEvent) {
-        useEventStore.setState(() => ({
-          currentEvent,
-        }));
-      }
-    }
-  }
-
+const fetchPlayerData = async (entry: number, currentEvent: number) => {
   const fetchPlayerDataUrls = [
     fetch(
       `https://fantasy.premierleague.com/api/entry/${entry}/event/${currentEvent}/picks/`,
@@ -118,18 +97,26 @@ async function getPlayers(entry = 0) {
   const listOfAllPlayers: ListOfPlayersResponse =
     await listOfAllPlayersResponse.json();
 
-  const teamPlayerIds = playerPicks.picks.map((player) => player.element);
-  const roster = listOfAllPlayers?.elements.filter((player) =>
-    teamPlayerIds.includes(player.id),
-  );
+  return { playerPicks, managerInfo, listOfAllPlayers };
+};
 
+const getRosterResult = async (
+  roster: ListOfPlayers[],
+  playerPicks: {
+    element: number;
+    position: number;
+    multiplier: number;
+    is_captain: boolean;
+    is_vice_captain: boolean;
+  }[],
+) => {
   let event_points = 0;
 
   const rosterResult = roster.reduce(
     (acc, elem) => {
       const position = POSITIONS[elem.element_type];
 
-      const playerFieldData = playerPicks.picks.find(
+      const playerFieldData = playerPicks.find(
         (player) => player.element === elem.id,
       );
 
@@ -161,6 +148,35 @@ async function getPlayers(entry = 0) {
     },
   );
 
+  return { rosterResult, event_points };
+};
+
+async function getPlayers(entry = 0) {
+  const headersList = headers();
+  const referer = headersList.get("referer") ?? "/";
+  let currentEvent = useEventStore.getState().currentEvent;
+
+  if (!currentEvent) currentEvent = await getCurrentEvent();
+
+  const { playerPicks, managerInfo, listOfAllPlayers } = await fetchPlayerData(
+    entry,
+    currentEvent,
+  );
+
+  const teamPlayerIds = playerPicks.picks.map((player) => player.element);
+  const roster = listOfAllPlayers?.elements.filter((player) =>
+    teamPlayerIds.includes(player.id),
+  );
+
+  const isLive =
+    listOfAllPlayers?.events.find((event) => event.id === currentEvent)
+      ?.is_current ?? false;
+
+  const { rosterResult, event_points } = await getRosterResult(
+    roster,
+    playerPicks.picks,
+  );
+
   return (
     <>
       <Link href={referer} className="mb-8 flex">
@@ -184,10 +200,15 @@ async function getPlayers(entry = 0) {
             <Players players={rosterResult.reserves} />
           </div>
         </div>
-        <div className="flex flex-1 flex-col items-center md:mt-24 md:basis-2/4 md:items-end">
+        <div className="flex flex-1 flex-col items-center md:mt-20 md:basis-2/4 md:items-center">
           <div className="rounded-2xl border-2 bg-gray-900 p-10 text-7xl font-semibold">
             {event_points}
           </div>
+          {isLive ? (
+            <div className="text-md mt-4 bg-gray-900 px-4 py-2 font-semibold uppercase text-green-600">
+              Live
+            </div>
+          ) : null}
         </div>
       </article>
     </>

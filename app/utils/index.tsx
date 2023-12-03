@@ -1,3 +1,6 @@
+import { eventStatus } from "learning/app/lib/actions";
+import { useEventStore } from "../store/eventStore";
+
 const handlePositionArrow = (entry_rank: number, entry_last_rank: number) => {
   if (entry_rank < entry_last_rank) {
     return <span className="text-green-400">&#8593;</span>;
@@ -17,7 +20,19 @@ const formatter = new Intl.DateTimeFormat("en-US", {
   weekday: "long",
 });
 
+const getCurrentEvent = async () => {
+  const currentEvent = await eventStatus();
+
+  if (!useEventStore.getState().currentEvent) {
+    useEventStore.setState(() => ({
+      currentEvent,
+    }));
+  }
+
+  return currentEvent;
+};
+
 const formatted_last_updated = (date: string) =>
   formatter.format(new Date(date));
 
-export { handlePositionArrow, formatted_last_updated };
+export { handlePositionArrow, formatted_last_updated, getCurrentEvent };

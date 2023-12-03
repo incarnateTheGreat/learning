@@ -18,15 +18,12 @@ export default async function RootLayout({
 }) {
   const stateCurrentEvent = useEventStore.getState().currentEvent;
 
-  // TODO: Store in a utility file for re-use. Same in Player Page file.
   if (!stateCurrentEvent) {
     const currentEvent = await eventStatus();
 
-    if (!useEventStore.getState().currentEvent) {
-      useEventStore.setState(() => ({
-        currentEvent,
-      }));
-    }
+    useEventStore.setState(() => ({
+      currentEvent,
+    }));
   }
 
   return (
