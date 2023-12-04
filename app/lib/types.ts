@@ -58,6 +58,14 @@ type ManagerInfoResponse = {
   last_deadline_total_transfers: number;
 };
 
+type PlayerPicks = {
+  element: number;
+  position: number;
+  multiplier: number;
+  is_captain: boolean;
+  is_vice_captain: boolean;
+};
+
 type PlayerPicksResponse = {
   entry_history: {
     event: number;
@@ -72,13 +80,41 @@ type PlayerPicksResponse = {
     event_transfers_cost: number;
     points_on_bench: number;
   };
-  picks: {
-    element: number;
-    position: number;
-    multiplier: number;
-    is_captain: boolean;
-    is_vice_captain: boolean;
-  }[];
+  picks: PlayerPicks[];
+};
+
+type PlayerPicksLive = {
+  id: number;
+  stats: {
+    minutes: number;
+    goals_scored: number;
+    assists: number;
+    clean_sheets: number;
+    goals_conceded: number;
+    own_goals: number;
+    penalties_saved: number;
+    penalties_missed: number;
+    yellow_cards: number;
+    red_cards: number;
+    saves: number;
+    bonus: number;
+    bps: number;
+    influence: string;
+    creativity: string;
+    threat: string;
+    ict_index: string;
+    starts: number;
+    expected_goals: string;
+    expected_assists: string;
+    expected_goal_involvements: string;
+    expected_goals_conceded: string;
+    total_points: number;
+    in_dreamteam: boolean;
+  };
+};
+
+type PlayerPicksLiveResponse = {
+  elements: PlayerPicksLive[];
 };
 
 type ListOfPlayers = {
@@ -246,6 +282,9 @@ export type {
   StandingsResponse,
   ManagerInfoResponse,
   PlayerPicksResponse,
+  PlayerPicks,
+  PlayerPicksLive,
+  PlayerPicksLiveResponse,
   ListOfPlayersResponse,
   ListOfPlayers,
 };

@@ -4,6 +4,9 @@ import {
   ListOfPlayers,
   ListOfPlayersResponse,
   ManagerInfoResponse,
+  PlayerPicks,
+  PlayerPicksLive,
+  PlayerPicksLiveResponse,
   PlayerPicksResponse,
 } from "learning/app/lib/types";
 import { useEventStore } from "learning/app/store/eventStore";
@@ -82,33 +85,32 @@ const fetchPlayerData = async (entry: number, currentEvent: number) => {
     fetch(
       `https://fantasy.premierleague.com/api/entry/${entry}/event/${currentEvent}/picks/`,
     ),
+    fetch(`https://fantasy.premierleague.com/api/event/${currentEvent}/live`),
     fetch(`https://fantasy.premierleague.com/api/entry/${entry}`),
     fetch("https://fantasy.premierleague.com/api/bootstrap-static/"),
   ];
 
   const [
     playerPicksResponse,
+    playerPicksLiveResponse,
     managerInfoResponse,
     listOfAllPlayersResponse,
   ]: Response[] = await Promise.all(fetchPlayerDataUrls);
 
   const playerPicks: PlayerPicksResponse = await playerPicksResponse.json();
+  const playerPicksLive: PlayerPicksLiveResponse =
+    await playerPicksLiveResponse.json();
   const managerInfo: ManagerInfoResponse = await managerInfoResponse.json();
   const listOfAllPlayers: ListOfPlayersResponse =
     await listOfAllPlayersResponse.json();
 
-  return { playerPicks, managerInfo, listOfAllPlayers };
+  return { playerPicks, playerPicksLive, managerInfo, listOfAllPlayers };
 };
 
 const getRosterResult = async (
   roster: ListOfPlayers[],
-  playerPicks: {
-    element: number;
-    position: number;
-    multiplier: number;
-    is_captain: boolean;
-    is_vice_captain: boolean;
-  }[],
+  playerPicks: PlayerPicks[],
+  playerPicksLive: PlayerPicksLive[],
 ) => {
   let event_points = 0;
 
@@ -128,7 +130,13 @@ const getRosterResult = async (
           acc.starters[position] = [elem];
         }
 
-        event_points += elem.event_points;
+        const playerWithLiveData = playerPicksLive.find(
+          (player) => player.id === elem.id,
+        );
+
+        event_points +=
+          playerWithLiveData?.stats?.total_points +
+          playerWithLiveData?.stats?.bonus;
       }
 
       // Reserves
@@ -158,23 +166,29 @@ async function getPlayers(entry = 0) {
 
   if (!currentEvent) currentEvent = await getCurrentEvent();
 
-  const { playerPicks, managerInfo, listOfAllPlayers } = await fetchPlayerData(
-    entry,
-    currentEvent,
-  );
+  const { playerPicks, playerPicksLive, managerInfo, listOfAllPlayers } =
+    await fetchPlayerData(entry, currentEvent);
 
   const teamPlayerIds = playerPicks.picks.map((player) => player.element);
   const roster = listOfAllPlayers?.elements.filter((player) =>
     teamPlayerIds.includes(player.id),
   );
+  const liveRoster = playerPicksLive.elements.filter((player) =>
+    teamPlayerIds.includes(player.id),
+  );
+
+  // if live, maybe use /live endpoint, otherwise use this one?
+  const currentGameWeek = listOfAllPlayers?.events.find(
+    (event) => event.id === currentEvent,
+  );
 
   const isLive =
-    listOfAllPlayers?.events.find((event) => event.id === currentEvent)
-      ?.is_current ?? false;
+    (currentGameWeek?.is_current && !currentGameWeek?.finished) ?? false;
 
   const { rosterResult, event_points } = await getRosterResult(
     roster,
     playerPicks.picks,
+    liveRoster,
   );
 
   return (
