@@ -56,7 +56,7 @@ const TableRow = ({ playerData, label }: TableRowProps) => {
       </div>
       {playerData?.length > 0 ? (
         playerData.map((player) => {
-          const { id, team, web_name, event_points } = player;
+          const { id, team, web_name, total_points } = player;
           const team_name = TEAMS[team]?.name ?? "N/A";
 
           return (
@@ -66,7 +66,7 @@ const TableRow = ({ playerData, label }: TableRowProps) => {
                 <span className="text-sm text-gray-200">({team_name})</span>
               </div>
               <div className="table-cell border-b border-gray-400 px-2 py-1 text-right font-semibold">
-                {event_points}
+                {total_points}
               </div>
             </div>
           );
@@ -107,6 +107,14 @@ const fetchPlayerData = async (entry: number, currentEvent: number) => {
   return { playerPicks, playerPicksLive, managerInfo, listOfAllPlayers };
 };
 
+const calcPlayerPoints = (
+  total_points: number,
+  bonus: number,
+  is_captain: boolean,
+) => {
+  return (total_points + bonus) * (is_captain ? 2 : 1);
+};
+
 const getRosterResult = async (
   roster: ListOfPlayers[],
   playerPicks: PlayerPicks[],
@@ -122,25 +130,34 @@ const getRosterResult = async (
         (player) => player.element === elem.id,
       );
 
+      const playerWithLiveData = playerPicksLive.find(
+        (player) => player.id === elem.id,
+      );
+
+      const player_total_points = calcPlayerPoints(
+        playerWithLiveData?.stats?.total_points,
+        playerWithLiveData?.stats?.bonus,
+        playerFieldData.is_captain,
+      );
+
       // Starters
       if (playerFieldData.position <= 11) {
+        event_points += player_total_points;
+
+        elem["total_points"] = player_total_points;
+        elem["is_captain"] = playerFieldData.is_captain;
+
         if (acc.starters[position]) {
           acc.starters[position].push(elem);
         } else {
           acc.starters[position] = [elem];
         }
-
-        const playerWithLiveData = playerPicksLive.find(
-          (player) => player.id === elem.id,
-        );
-
-        event_points +=
-          playerWithLiveData?.stats?.total_points +
-          playerWithLiveData?.stats?.bonus;
       }
 
       // Reserves
       if (playerFieldData.position >= 12) {
+        elem["total_points"] = player_total_points;
+
         if (acc.reserves[position]) {
           acc.reserves[position].push(elem);
         } else {
@@ -168,6 +185,13 @@ async function getPlayers(entry = 0) {
 
   const { playerPicks, playerPicksLive, managerInfo, listOfAllPlayers } =
     await fetchPlayerData(entry, currentEvent);
+
+  if (
+    typeof playerPicks === "string" &&
+    playerPicks === "The game is being updated."
+  ) {
+    return "The game is being updated.";
+  }
 
   const teamPlayerIds = playerPicks.picks.map((player) => player.element);
   const roster = listOfAllPlayers?.elements.filter((player) =>

@@ -44,6 +44,10 @@ async function loadLeagueData(id: number) {
 
   const resJson: FPLResponse = await res.json();
 
+  if (res.status === 503) {
+    return "The game is being updated.";
+  }
+
   return resJson;
 }
 
@@ -57,6 +61,11 @@ const LeagueList = async ({ id }: LeaguesList) => {
   noStore();
 
   const leagueData = await loadLeagueData(id);
+
+  if (typeof leagueData === "string") {
+    return leagueData;
+  }
+
   const {
     leagues: { classic },
     name,

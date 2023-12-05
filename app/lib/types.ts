@@ -117,7 +117,7 @@ type PlayerPicksLiveResponse = {
   elements: PlayerPicksLive[];
 };
 
-type ListOfPlayers = {
+type ListOfPlayers = PlayerPicks & {
   chance_of_playing_next_round: number;
   chance_of_playing_this_round: number;
   code: number;
@@ -126,6 +126,7 @@ type ListOfPlayers = {
   cost_change_start: number;
   cost_change_start_fall: number;
   dreamteam_count: number;
+  did_play: boolean;
   element_type: number;
   ep_next: string;
   ep_this: string;

@@ -8,6 +8,8 @@ import {
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import { useEventStore } from "learning/app/store/eventStore";
+import classNames from "classnames";
 
 type LeagueProps = {
   params: {
@@ -74,6 +76,8 @@ const League = async ({ params }: LeagueProps) => {
     standings: { results, page, has_next },
   } = standingsData;
 
+  const logged_in_user = useEventStore.getState().leagueIDs;
+
   return (
     <Suspense
       fallback={
@@ -124,10 +128,18 @@ const League = async ({ params }: LeagueProps) => {
                   event_total,
                 } = result;
 
+                const is_logged_in_user = logged_in_user.includes(entry);
+
                 const link = `/player/${entry}`;
 
                 return (
-                  <div key={id} className="table-row even:bg-gray-800">
+                  <div
+                    key={id}
+                    className={classNames("table-row ", {
+                      "bg-[#592424]": is_logged_in_user,
+                      "even:bg-gray-800": !is_logged_in_user,
+                    })}
+                  >
                     <div className="table-cell w-[5%] pl-2">
                       <div className="flex">
                         <span className="mr-2 min-w-[14px]">

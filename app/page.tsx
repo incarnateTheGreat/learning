@@ -1,7 +1,8 @@
 import { Suspense } from "react";
 import LeagueList from "./components/FPL";
+import { useEventStore } from "./store/eventStore";
 
-const leagueIDs = [2611380, 6336704, 3243473];
+const leagueIDs = useEventStore.getState().leagueIDs;
 
 export default function Home() {
   return (
