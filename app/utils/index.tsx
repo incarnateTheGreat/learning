@@ -1,4 +1,5 @@
 import { eventStatus } from "learning/app/lib/actions";
+
 import { useEventStore } from "../store/eventStore";
 
 const handlePositionArrow = (entry_rank: number, entry_last_rank: number) => {
@@ -35,4 +36,4 @@ const getCurrentEvent = async () => {
 const formatted_last_updated = (date: string) =>
   formatter.format(new Date(date));
 
-export { handlePositionArrow, formatted_last_updated, getCurrentEvent };
+export { formatted_last_updated, getCurrentEvent, handlePositionArrow };

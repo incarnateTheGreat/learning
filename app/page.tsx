@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+
 import LeagueList from "./components/FPL";
 import { useEventStore } from "./store/eventStore";
 

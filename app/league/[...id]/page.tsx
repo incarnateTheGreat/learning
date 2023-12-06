@@ -1,66 +1,21 @@
-import { unstable_noStore as noStore } from "next/cache";
+import { Suspense } from "react";
+import classNames from "classnames";
 import { loadStandings } from "learning/app/lib/actions";
 import { Result } from "learning/app/lib/types";
+import { useEventStore } from "learning/app/store/eventStore";
 import {
   formatted_last_updated,
   handlePositionArrow,
 } from "learning/app/utils";
+import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { Suspense } from "react";
-import { useEventStore } from "learning/app/store/eventStore";
-import classNames from "classnames";
+
+import { NextButton, PrevButton } from "./components/Controls";
 
 type LeagueProps = {
   params: {
     id: number[];
   };
-};
-
-type NavButtonProps = {
-  page: number;
-  id: number;
-};
-
-const PrevButton = async ({ page, id }: NavButtonProps) => {
-  return (
-    <form
-      action={async () => {
-        "use server";
-
-        let prev_page = page;
-
-        prev_page -= 1;
-
-        if (prev_page === 1) {
-          redirect(`/league/${id}`);
-        } else {
-          redirect(`/league/${id}/${prev_page}`);
-        }
-      }}
-    >
-      <button>Prev</button>
-    </form>
-  );
-};
-
-const NextButton = async ({ page, id }: NavButtonProps) => {
-  return (
-    <form
-      className={page === 1 ? "ml-auto" : ""}
-      action={async () => {
-        "use server";
-
-        let next_page = page;
-
-        next_page += 1;
-
-        redirect(`/league/${id}/${next_page}`);
-      }}
-    >
-      <button>Next</button>
-    </form>
-  );
 };
 
 const League = async ({ params }: LeagueProps) => {

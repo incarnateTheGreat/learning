@@ -1,5 +1,5 @@
-import { PlayersRecord, getXataClient } from "learning/src/xata";
 import { SelectedPick } from "@xata.io/client";
+import { getXataClient, PlayersRecord } from "learning/src/xata";
 
 type PlayersList = {
   size: number;

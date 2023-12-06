@@ -1,124 +1,37 @@
-import { unstable_noStore as noStore } from "next/cache";
-
+import { Suspense } from "react";
+import { Players } from "learning/app/league/components/Players";
 import {
+  GameWeekFixtures,
   ListOfPlayers,
-  ListOfPlayersResponse,
-  ManagerInfoResponse,
   PlayerPicks,
   PlayerPicksLive,
-  PlayerPicksLiveResponse,
-  PlayerPicksResponse,
 } from "learning/app/lib/types";
 import { useEventStore } from "learning/app/store/eventStore";
-import Link from "next/link";
-import { Suspense } from "react";
-
-import { headers } from "next/headers";
-import { POSITIONS, TEAMS } from "learning/app/utils/constants";
 import { getCurrentEvent } from "learning/app/utils";
+import { POSITIONS } from "learning/app/utils/constants";
+import { unstable_noStore as noStore } from "next/cache";
+import { headers } from "next/headers";
+import Link from "next/link";
+
+import { fetchPlayerData } from "../api";
 
 type PlayerProps = {
   params: { entry: number[] };
 };
 
-type TableRowProps = {
-  playerData: ListOfPlayers[];
-  label: string;
-};
-
-type PlayersProps = {
-  players: ListOfPlayers[][];
-};
-
-const Players = ({ players }: PlayersProps) => {
-  return Object.keys(POSITIONS).map((position) => {
-    if (
-      players[POSITIONS[position]]?.length === 0 ||
-      !players[POSITIONS[position]]
-    )
-      return;
-
-    return (
-      <TableRow
-        key={position}
-        playerData={players[POSITIONS[position]]}
-        label={POSITIONS[position]}
-      />
-    );
-  });
-};
-
-const TableRow = ({ playerData, label }: TableRowProps) => {
-  return (
-    <>
-      <div className="table-header-group">
-        <h2 className="table-cell px-2 py-1 pt-4 font-semibold">{label}</h2>
-      </div>
-      {playerData?.length > 0 ? (
-        playerData.map((player) => {
-          const { id, team, web_name, total_points } = player;
-          const team_name = TEAMS[team]?.name ?? "N/A";
-
-          return (
-            <div key={id} className="table-row bg-gray-800">
-              <div className="table-cell border-b border-gray-400 px-2 py-1">
-                {web_name}{" "}
-                <span className="text-sm text-gray-200">({team_name})</span>
-              </div>
-              <div className="table-cell border-b border-gray-400 px-2 py-1 text-right font-semibold">
-                {total_points}
-              </div>
-            </div>
-          );
-        })
-      ) : (
-        <div className="table-row">
-          <div className="table-cell px-2 py-1">None</div>
-        </div>
-      )}
-    </>
-  );
-};
-
-const fetchPlayerData = async (entry: number, currentEvent: number) => {
-  const fetchPlayerDataUrls = [
-    fetch(
-      `https://fantasy.premierleague.com/api/entry/${entry}/event/${currentEvent}/picks/`,
-    ),
-    fetch(`https://fantasy.premierleague.com/api/event/${currentEvent}/live`),
-    fetch(`https://fantasy.premierleague.com/api/entry/${entry}`),
-    fetch("https://fantasy.premierleague.com/api/bootstrap-static/"),
-  ];
-
-  const [
-    playerPicksResponse,
-    playerPicksLiveResponse,
-    managerInfoResponse,
-    listOfAllPlayersResponse,
-  ]: Response[] = await Promise.all(fetchPlayerDataUrls);
-
-  const playerPicks: PlayerPicksResponse = await playerPicksResponse.json();
-  const playerPicksLive: PlayerPicksLiveResponse =
-    await playerPicksLiveResponse.json();
-  const managerInfo: ManagerInfoResponse = await managerInfoResponse.json();
-  const listOfAllPlayers: ListOfPlayersResponse =
-    await listOfAllPlayersResponse.json();
-
-  return { playerPicks, playerPicksLive, managerInfo, listOfAllPlayers };
-};
-
 const calcPlayerPoints = (
   total_points: number,
-  bonus: number,
+  // bonus: number,
   is_captain: boolean,
 ) => {
-  return (total_points + bonus) * (is_captain ? 2 : 1);
+  return total_points * (is_captain ? 2 : 1);
 };
 
-const getRosterResult = async (
+const getRosterResult = (
   roster: ListOfPlayers[],
   playerPicks: PlayerPicks[],
   playerPicksLive: PlayerPicksLive[],
+  gameweekFixtures: GameWeekFixtures[],
 ) => {
   let event_points = 0;
 
@@ -134,11 +47,25 @@ const getRosterResult = async (
         (player) => player.id === elem.id,
       );
 
+      const fixture = playerWithLiveData?.explain?.[0].fixture;
+
+      const getMatchData = gameweekFixtures.find((game) => {
+        return game.id === fixture;
+      });
+
       const player_total_points = calcPlayerPoints(
         playerWithLiveData?.stats?.total_points,
-        playerWithLiveData?.stats?.bonus,
+        // playerWithLiveData?.stats?.bonus,
         playerFieldData.is_captain,
       );
+
+      const has_match_started = getMatchData.started;
+      // (playerWithLiveData.stats.minutes > 0 && getMatchData.finished);
+
+      // if the match starts, change from - to 0
+
+      elem["has_match_started"] = has_match_started;
+      elem["game_is_live"] = getMatchData.started && !getMatchData.finished;
 
       // Starters
       if (playerFieldData.position <= 11) {
@@ -183,8 +110,13 @@ async function getPlayers(entry = 0) {
 
   if (!currentEvent) currentEvent = await getCurrentEvent();
 
-  const { playerPicks, playerPicksLive, managerInfo, listOfAllPlayers } =
-    await fetchPlayerData(entry, currentEvent);
+  const {
+    playerPicks,
+    playerPicksLive,
+    managerInfo,
+    listOfAllPlayers,
+    gameweekFixtures,
+  } = await fetchPlayerData(entry, currentEvent);
 
   if (
     typeof playerPicks === "string" &&
@@ -209,10 +141,11 @@ async function getPlayers(entry = 0) {
   const isLive =
     (currentGameWeek?.is_current && !currentGameWeek?.finished) ?? false;
 
-  const { rosterResult, event_points } = await getRosterResult(
+  const { rosterResult, event_points } = getRosterResult(
     roster,
     playerPicks.picks,
     liveRoster,
+    gameweekFixtures,
   );
 
   return (
