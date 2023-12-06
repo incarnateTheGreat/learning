@@ -60,12 +60,10 @@ const getRosterResult = (
       );
 
       const has_match_started = getMatchData.started;
-      // (playerWithLiveData.stats.minutes > 0 && getMatchData.finished);
-
-      // if the match starts, change from - to 0
 
       elem["has_match_started"] = has_match_started;
-      elem["game_is_live"] = getMatchData.started && !getMatchData.finished;
+      elem["game_is_live"] =
+        getMatchData.started && !getMatchData.finished_provisional;
 
       // Starters
       if (playerFieldData.position <= 11) {
