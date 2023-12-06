@@ -148,4 +148,4 @@ const POSITIONS = {
   "4": "Forwards",
 };
 
-export { TEAMS, POSITIONS };
+export { POSITIONS, TEAMS };
