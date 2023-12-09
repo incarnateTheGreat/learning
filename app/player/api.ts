@@ -12,7 +12,9 @@ const fetchPlayerData = async (entry: number, currentEvent: number) => {
     ),
     fetch(`https://fantasy.premierleague.com/api/event/${currentEvent}/live`),
     fetch(`https://fantasy.premierleague.com/api/entry/${entry}`),
-    fetch("https://fantasy.premierleague.com/api/bootstrap-static/"),
+    fetch("https://fantasy.premierleague.com/api/bootstrap-static/", {
+      cache: "force-cache",
+    }),
     fetch(
       `https://fantasy.premierleague.com/api/fixtures/?event=${currentEvent}`,
     ),
