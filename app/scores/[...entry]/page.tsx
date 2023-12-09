@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import classNames from "classnames";
 import { GameWeekFixtures } from "learning/app/lib/types";
 import { TEAMS } from "learning/app/utils/constants";
 
@@ -9,18 +10,13 @@ type ScoresProps = {
 type GameStatusProps = {
   started: boolean;
   finished_provisional: boolean;
-  minutes: number;
 };
 
-const GameStatus = ({
-  started,
-  finished_provisional,
-  minutes,
-}: GameStatusProps) => {
+const GameStatus = ({ started, finished_provisional }: GameStatusProps) => {
   if (!started) return <div className="w-9 text-right">&nbsp;</div>;
 
   if (started && !finished_provisional)
-    return <div className="w-9 text-right">{minutes}</div>;
+    return <div className="w-9 text-right">L</div>;
 
   if (finished_provisional) return <div className="w-9 text-right">F</div>;
 
@@ -45,20 +41,23 @@ async function getScores(currentEvent = 0) {
           team_a_score,
           team_h,
           team_h_score,
-          minutes,
           started,
           finished_provisional,
         } = game;
 
         return (
-          <div key={code} className="border border-gray-600 px-4 py-2">
+          <div
+            key={code}
+            className={classNames("border border-gray-600 px-4 py-2", {
+              "bg-green-900": started && !finished_provisional,
+            })}
+          >
             <div className="flex justify-between">
               <div className="mr-1 flex w-full">
                 <div>{TEAMS[team_a].name}</div>
                 <div className="ml-auto">{team_a_score}</div>
               </div>
               <GameStatus
-                minutes={minutes}
                 started={started}
                 finished_provisional={finished_provisional}
               />
