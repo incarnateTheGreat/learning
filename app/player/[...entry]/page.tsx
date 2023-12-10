@@ -74,6 +74,7 @@ const getRosterResult = (
 
         elem["total_points"] = player_total_points;
         elem["is_captain"] = playerFieldData.is_captain;
+        elem["is_vice_captain"] = playerFieldData.is_vice_captain;
 
         if (acc.starters[position]) {
           acc.starters[position].push(elem);
