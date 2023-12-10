@@ -44,6 +44,7 @@ const TableRow = ({ playerData, label }: TableRowProps) => {
             total_points,
             has_match_started,
             game_is_live,
+            is_captain,
           } = player;
           const team_name = TEAMS[team]?.name ?? "N/A";
 
@@ -56,7 +57,9 @@ const TableRow = ({ playerData, label }: TableRowProps) => {
             >
               <div className="table-cell border-b border-gray-400 px-2 py-1">
                 {web_name}{" "}
-                <span className="text-sm text-gray-200">({team_name})</span>
+                <span className="text-sm text-gray-200">
+                  ({team_name}) {is_captain ? "(C)" : null}
+                </span>
               </div>
               <div className="table-cell border-b border-gray-400 px-2 py-1 text-right font-semibold">
                 {has_match_started ? total_points : "-"}
