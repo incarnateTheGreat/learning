@@ -22,11 +22,7 @@ type PlayerProps = {
   params: { entry: number[] };
 };
 
-const calcPlayerPoints = (
-  total_points: number,
-  // bonus: number,
-  is_captain: boolean,
-) => {
+const calcPlayerPoints = (total_points: number, is_captain: boolean) => {
   return total_points * (is_captain ? 2 : 1);
 };
 
@@ -58,7 +54,6 @@ const getRosterResult = (
 
       const player_total_points = calcPlayerPoints(
         playerWithLiveData?.stats?.total_points,
-        // playerWithLiveData?.stats?.bonus,
         playerFieldData.is_captain,
       );
 
