@@ -38,7 +38,7 @@ const NavForm = ({
       <Link href="/" className="mb-8 flex">
         &laquo; Back to Home
       </Link>
-      <div className="flex justify-between">
+      <div className="mb-4 flex justify-between">
         {page > 1 ? (
           <button
             onClick={() => {
@@ -47,19 +47,22 @@ const NavForm = ({
               });
             }}
           >
-            <>&laquo; Prev</>
+            &laquo; Prev
           </button>
         ) : null}
 
         {has_next ? (
           <button
+            className={classNames({
+              "ml-auto": page === 1,
+            })}
             onClick={() => {
               startTransition(async () => {
                 await navAction(page, id);
               });
             }}
           >
-            <>Next &raquo;</>
+            Next &raquo;
           </button>
         ) : null}
       </div>
