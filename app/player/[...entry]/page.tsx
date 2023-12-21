@@ -46,7 +46,7 @@ const getRosterResult = (
         (player) => player.id === elem.id,
       );
 
-      const fixture = playerWithLiveData?.explain?.[0].fixture;
+      const fixture = playerWithLiveData?.explain?.[0]?.fixture;
 
       const getMatchData = gameweekFixtures.find((game) => {
         return game.id === fixture;
@@ -57,11 +57,11 @@ const getRosterResult = (
         playerFieldData.is_captain,
       );
 
-      const has_match_started = getMatchData.started;
+      const has_match_started = getMatchData?.started;
 
       elem["has_match_started"] = has_match_started;
       elem["game_is_live"] =
-        getMatchData.started && !getMatchData.finished_provisional;
+        getMatchData?.started && !getMatchData.finished_provisional;
 
       // Starters
       if (playerFieldData.position <= 11) {
@@ -71,7 +71,7 @@ const getRosterResult = (
         elem["is_captain"] = playerFieldData.is_captain;
         elem["is_vice_captain"] = playerFieldData.is_vice_captain;
 
-        if (acc.starters[position]) {
+        if (acc?.starters?.[position]) {
           acc.starters[position].push(elem);
         } else {
           acc.starters[position] = [elem];
@@ -82,7 +82,7 @@ const getRosterResult = (
       if (playerFieldData.position >= 12) {
         elem["total_points"] = player_total_points;
 
-        if (acc.reserves[position]) {
+        if (acc?.reserves?.[position]) {
           acc.reserves[position].push(elem);
         } else {
           acc.reserves[position] = [elem];
