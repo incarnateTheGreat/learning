@@ -23,7 +23,7 @@ type NavFormProps = {
 
 const logged_in_user = useEventStore.getState().leagueIDs;
 
-const NavForm = ({
+const LeagueNavigationForm = ({
   page,
   id,
   has_next,
@@ -143,4 +143,4 @@ const NavForm = ({
   );
 };
 
-export default NavForm;
+export default LeagueNavigationForm;

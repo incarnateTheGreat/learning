@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { loadStandings } from "learning/app/lib/actions";
 import { unstable_noStore as noStore } from "next/cache";
 
-import NavForm from "./components/NavForm";
+import LeagueNavigationForm from "./components/LeagueNavigationForm";
 
 type LeagueProps = {
   params: {
@@ -31,7 +31,7 @@ const League = async ({ params }: LeagueProps) => {
         </div>
       }
     >
-      <NavForm
+      <LeagueNavigationForm
         page={page}
         id={id}
         has_next={has_next}

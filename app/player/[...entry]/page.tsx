@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import LoadingSpinner from "learning/app/components/LoadingSpinner/LoadingSpinner";
 import { Players } from "learning/app/league/components/Players";
 import {
   GameWeekFixtures,
@@ -9,12 +10,9 @@ import {
 import { useEventStore } from "learning/app/store/eventStore";
 import { getCurrentEvent } from "learning/app/utils";
 import { POSITIONS } from "learning/app/utils/constants";
-import refreshImg from "learning/public/refresh.svg";
 import { unstable_noStore as noStore } from "next/cache";
 import { headers } from "next/headers";
-import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 import { fetchPlayerData } from "../api";
 
@@ -172,21 +170,7 @@ async function getPlayers(entry = 0) {
           <div className="rounded-2xl border-2 bg-gray-900 p-10 text-7xl font-semibold">
             {event_points}
           </div>
-          <form
-            className="mt-2"
-            action={async (formData) => {
-              "use server";
-
-              const entry = formData.get("entry") as string;
-
-              redirect(`/player/${entry}`);
-            }}
-          >
-            <input name="entry" type="hidden" value={entry} />
-            <button>
-              <Image src={refreshImg} alt="Refresh" />
-            </button>
-          </form>
+          <LoadingSpinner entry={entry} classnames="mt-2" />
           {isLive ? (
             <div className="text-md mt-2 bg-gray-900 px-4 py-2 font-semibold uppercase text-green-600">
               Live
