@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 
 const navAction = async (page: number, id: number, direction = "next") => {
-  let pageToChange = page;
+  let pageToChange = +page;
 
   if (direction === "prev") {
     pageToChange -= 1;
