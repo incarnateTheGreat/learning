@@ -170,11 +170,13 @@ async function getPlayers(entry = 0) {
           <div className="rounded-2xl border-2 bg-gray-900 p-10 text-7xl font-semibold">
             {event_points}
           </div>
-          <LoadingSpinner entry={entry} classnames="mt-2" />
           {isLive ? (
-            <div className="text-md mt-2 bg-gray-900 px-4 py-2 font-semibold uppercase text-green-600">
-              Live
-            </div>
+            <>
+              <LoadingSpinner entry={entry} classnames="mt-2" />
+              <div className="text-md mt-2 bg-gray-900 px-4 py-2 font-semibold uppercase text-green-600">
+                Live
+              </div>
+            </>
           ) : null}
         </div>
       </article>
@@ -189,7 +191,7 @@ const Player = async ({ params: { entry } }: PlayerProps) => {
 
   return (
     <Suspense fallback={<h2>Loading player...</h2>}>
-      <section className="mx-auto my-4 w-[90%] text-sm md:w-4/5 md:max-w-[800px] md:text-base">
+      <section className="mb-4 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
         {players}
       </section>
     </Suspense>

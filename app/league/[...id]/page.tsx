@@ -58,7 +58,7 @@ const League = async ({ params }: LeagueProps) => {
   return (
     <Suspense
       fallback={
-        <div className="mx-auto my-4 w-[90%] text-sm md:w-4/5 md:max-w-[800px] md:text-base">
+        <div className="w-[90%] text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
           <h2>Loading league...</h2>
         </div>
       }

@@ -54,7 +54,7 @@ async function loadLeagueData(id: number) {
     const invitationalClassicLeagues = filterLeague(classic);
 
     return (
-      <div className="mr-4 mt-4 w-full rounded border border-gray-800 bg-gray-800 p-4 last:mr-0 md:mt-0 md:w-1/3">
+      <div className="mr-4 mt-4 w-full rounded border border-gray-800 bg-gray-800 p-4 first:mt-0 last:mr-0 md:mt-0 md:w-1/3">
         <h1 className="mb-4 border-b text-xl font-semibold">
           <span className="mr-2">{name}</span>
           <span>({summary_event_points})</span>

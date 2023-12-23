@@ -36,4 +36,20 @@ const getCurrentEvent = async () => {
 const formatted_last_updated = (date: string) =>
   formatter.format(new Date(date));
 
-export { formatted_last_updated, getCurrentEvent, handlePositionArrow };
+const kickoff_time_formatter = new Intl.DateTimeFormat("en-US", {
+  hour: "numeric",
+  hour12: false,
+  minute: "numeric",
+  month: "short",
+  day: "2-digit",
+});
+
+const formatted_kickoff_time = (date: string) =>
+  kickoff_time_formatter.format(new Date(date));
+
+export {
+  formatted_kickoff_time,
+  formatted_last_updated,
+  getCurrentEvent,
+  handlePositionArrow,
+};

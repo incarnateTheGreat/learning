@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import Header from "./components/Header";
 import { eventStatus } from "./lib/actions";
 import { useEventStore } from "./store/eventStore";
 
@@ -30,7 +31,13 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-black`}>{children}</body>
+      <body className={`${inter.className} bg-black`}>
+        <Header />
+        <main className="flex flex-1 flex-col p-6 md:flex-row">{children}</main>
+        <footer className="border-t border-t-gray-400 px-7 py-2 text-sm">
+          &copy; {new Date().getFullYear()} FPLConnector.
+        </footer>
+      </body>
     </html>
   );
 }

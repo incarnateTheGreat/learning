@@ -2,7 +2,6 @@
 
 import { useTransition } from "react";
 import classNames from "classnames";
-import { useEventStore } from "learning/app/store/eventStore";
 import Link from "next/link";
 
 import navAction from "../actions/actions";
@@ -14,8 +13,6 @@ type NavFormProps = {
   standings: JSX.Element;
 };
 
-const logged_in_user = useEventStore.getState().leagueIDs;
-
 const LeagueNavigationForm = ({
   page,
   id,
@@ -25,7 +22,7 @@ const LeagueNavigationForm = ({
   const [pending, startTransition] = useTransition();
 
   return (
-    <section className="mx-auto my-4 w-[90%] text-sm md:w-4/5 md:max-w-[800px] md:text-base">
+    <section className="mb-4 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
       <Link href="/" className="mb-8 flex">
         &laquo; Back to Home
       </Link>
