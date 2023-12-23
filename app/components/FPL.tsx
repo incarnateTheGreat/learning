@@ -38,18 +38,53 @@ type LeaguesList = {
 };
 
 async function loadLeagueData(id: number) {
-  const res: Response = await fetch(
-    `https://fantasy.premierleague.com/api/entry/${id}/`,
-  );
+  try {
+    const res: Response = await fetch(
+      `https://fantasy.premierleague.com/api/entry/${id}/`,
+    );
 
-  const resJson: FPLResponse = await res.json();
+    const leagueData: FPLResponse = await res.json();
 
-  if (res.status === 503) {
-    return "The game is being updated.";
+    const {
+      leagues: { classic },
+      name,
+      summary_event_points,
+    } = leagueData;
+
+    const invitationalClassicLeagues = filterLeague(classic);
+
+    return (
+      <div className="mr-4 mt-4 w-full rounded border border-gray-800 bg-gray-800 p-4 last:mr-0 md:mt-0 md:w-1/3">
+        <h1 className="mb-4 border-b text-xl font-semibold">
+          <span className="mr-2">{name}</span>
+          <span>({summary_event_points})</span>
+        </h1>
+        {invitationalClassicLeagues.map((league: LeagueData) => {
+          const { id, name, entry_rank, entry_last_rank } = league;
+
+          return (
+            <div key={id} className="mb-4">
+              <Link href={`/league/${id}`} className="hover:text-gray-300">
+                <h2 className="post-title text-md font-semibold">{name}</h2>
+              </Link>
+              <p className="post-body">{numFormatter(entry_rank)}</p>
+              {handlePositionArrow(entry_rank, entry_last_rank)}
+            </div>
+          );
+        })}
+      </div>
+    );
+  } catch (err) {
+    return (
+      <div className="mr-4 mt-4 w-full rounded border border-gray-800 bg-gray-800 p-4 last:mr-0 md:mt-0 md:w-1/3">
+        Sorry. There is no available data at this time.
+      </div>
+    );
   }
-
-  return resJson;
 }
+
+const filterLeague = (leagueToFilter: LeagueData[]) =>
+  leagueToFilter.filter((league) => league.league_type === "x");
 
 const numFormatter = (val: number) => {
   return new Intl.NumberFormat("en-US", {
@@ -62,41 +97,7 @@ const LeagueList = async ({ id }: LeaguesList) => {
 
   const leagueData = await loadLeagueData(id);
 
-  if (typeof leagueData === "string") {
-    return leagueData;
-  }
-
-  const {
-    leagues: { classic },
-    name,
-    summary_event_points,
-  } = leagueData;
-
-  const invitationalClassicLeagues = classic.filter(
-    (league) => league.league_type === "x",
-  );
-
-  return (
-    <div className="mr-4 mt-4 w-full rounded border border-gray-800 bg-gray-800 p-4 last:mr-0 md:mt-0 md:w-1/3">
-      <h1 className="mb-4 border-b text-xl font-semibold">
-        <span className="mr-2">{name}</span>
-        <span>({summary_event_points})</span>
-      </h1>
-      {invitationalClassicLeagues.map((league: LeagueData) => {
-        const { id, name, entry_rank, entry_last_rank } = league;
-
-        return (
-          <div key={id} className="mb-4">
-            <Link href={`/league/${id}`} className="hover:text-gray-300">
-              <h2 className="post-title text-md font-semibold">{name}</h2>
-            </Link>
-            <p className="post-body">{numFormatter(entry_rank)}</p>
-            {handlePositionArrow(entry_rank, entry_last_rank)}
-          </div>
-        );
-      })}
-    </div>
-  );
+  return <>{leagueData}</>;
 };
 
 export default LeagueList;
