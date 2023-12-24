@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { GameWeekFixtures } from "learning/app/lib/types";
 import { useEventStore } from "learning/app/store/eventStore";
 import { TEAMS } from "learning/app/utils/constants";
+import { unstable_noStore as noStore } from "next/cache";
 
 import { formatted_kickoff_time, getCurrentEvent } from "../utils";
 
@@ -19,7 +20,7 @@ const GameStatus = ({
 }: GameStatusProps) => {
   if (!started)
     return (
-      <div className="w-9 basis-[15%] text-right md:basis-[40%]">
+      <div className="w-9 basis-[20%] text-right text-sm md:basis-[40%]">
         {kickoff_time.replace(/, /g, " ")}
       </div>
     );
@@ -51,9 +52,9 @@ async function getScores(currentEvent = 0) {
               code,
               kickoff_time,
               team_a,
-              team_a_score,
+              team_a_score = 0,
               team_h,
-              team_h_score,
+              team_h_score = 0,
               started,
               finished_provisional,
             } = game;
@@ -66,11 +67,21 @@ async function getScores(currentEvent = 0) {
                 })}
               >
                 <div className="flex basis-full flex-col">
-                  <div className="mr-1 flex w-full">
+                  <div
+                    className={classNames("mr-1 flex w-full", {
+                      "font-bold":
+                        finished_provisional && team_a_score > team_h_score,
+                    })}
+                  >
                     <div>{TEAMS[team_a].name}</div>
                     <div className="ml-auto">{team_a_score}</div>
                   </div>
-                  <div className="mr-1 flex w-full">
+                  <div
+                    className={classNames("mr-1 flex w-full", {
+                      "font-bold":
+                        finished_provisional && team_h_score > team_a_score,
+                    })}
+                  >
                     <div>{TEAMS[team_h].name}</div>
                     <div className="ml-auto">{team_h_score}</div>
                   </div>
@@ -96,6 +107,8 @@ async function getScores(currentEvent = 0) {
 }
 
 const Scores = async () => {
+  noStore();
+
   let currentEvent = useEventStore.getState().currentEvent;
 
   if (!currentEvent) currentEvent = await getCurrentEvent();
