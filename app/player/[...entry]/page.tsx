@@ -113,6 +113,9 @@ async function getPlayers(entry = 0) {
     gameweekFixtures,
   } = await fetchPlayerData(entry, currentEvent);
 
+  if (!playerPicks || playerPicks.detail === "Not found.")
+    return <div>Sorry. The Manager data is currently unavailable.</div>;
+
   if (
     typeof playerPicks === "string" &&
     playerPicks === "The game is being updated."

@@ -67,6 +67,7 @@ type PlayerPicks = {
 };
 
 type PlayerPicksResponse = {
+  detail?: string;
   entry_history: {
     event: number;
     points: number;

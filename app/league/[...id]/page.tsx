@@ -38,7 +38,7 @@ async function loadStandings(id: number, page_number = 1) {
       ),
     };
   } catch (err) {
-    return;
+    return null;
   }
 }
 
@@ -48,6 +48,13 @@ const League = async ({ params }: LeagueProps) => {
   const [id, page_number = 1] = params.id;
 
   const standingsData = await loadStandings(id, page_number);
+
+  if (!standingsData)
+    return (
+      <div className="mb-4 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
+        Sorry. There is no available league data at this time.
+      </div>
+    );
 
   const {
     standings: { new_page, has_next },
