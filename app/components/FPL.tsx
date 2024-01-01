@@ -31,10 +31,34 @@ type FPLResponse = {
   leagues: {
     classic: [LeagueData];
   };
+  summary_overall_rank: number;
 };
 
 type LeaguesList = {
   id: number;
+};
+
+type ClassicLeagueProps = {
+  leagueData: LeagueData[];
+};
+
+const ClassicLeague = ({ leagueData }: ClassicLeagueProps) => {
+  return leagueData.map((league) => {
+    const { id, name, entry_rank, entry_last_rank } = league;
+
+    return (
+      <div key={id} className="mb-4 px-2">
+        <Link
+          href={`/league/${id}`}
+          className="inline-flex hover:text-gray-300"
+        >
+          <h2 className="text-md font-semibold">{name}</h2>
+        </Link>
+        <p>{numFormatter(entry_rank)}</p>
+        {handlePositionArrow(entry_rank, entry_last_rank)}
+      </div>
+    );
+  });
 };
 
 async function loadLeagueData(id: number) {
@@ -49,7 +73,13 @@ async function loadLeagueData(id: number) {
       leagues: { classic },
       name,
       summary_event_points,
+      summary_overall_rank,
     } = leagueData;
+
+    const {
+      entry_rank: overall_entry_rank,
+      entry_last_rank: overall_entry_last_rank,
+    } = classic.find((league) => league.name === "Overall");
 
     const invitationalClassicLeagues = filterLeague(classic);
 
@@ -59,19 +89,18 @@ async function loadLeagueData(id: number) {
           <span className="mr-2">{name}</span>
           <span>({summary_event_points})</span>
         </h1>
-        {invitationalClassicLeagues.map((league: LeagueData) => {
-          const { id, name, entry_rank, entry_last_rank } = league;
-
-          return (
-            <div key={id} className="mb-4">
-              <Link href={`/league/${id}`} className="hover:text-gray-300">
-                <h2 className="post-title text-md font-semibold">{name}</h2>
-              </Link>
-              <p className="post-body">{numFormatter(entry_rank)}</p>
-              {handlePositionArrow(entry_rank, entry_last_rank)}
-            </div>
-          );
-        })}
+        <div className="mb-4 rounded bg-gray-900 p-2">
+          <span className="text-md font-semibold">Overall:</span>
+          <span className="ml-2">
+            {numFormatter(summary_overall_rank)}
+            {handlePositionArrow(
+              overall_entry_rank,
+              overall_entry_last_rank,
+              "ml-1",
+            )}
+          </span>
+        </div>
+        <ClassicLeague leagueData={invitationalClassicLeagues} />
       </div>
     );
   } catch (err) {

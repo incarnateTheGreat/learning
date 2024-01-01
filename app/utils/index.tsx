@@ -1,15 +1,24 @@
+import classNames from "classnames";
 import { eventStatus } from "learning/app/lib/actions";
 
 import { useEventStore } from "../store/eventStore";
 
-const handlePositionArrow = (entry_rank: number, entry_last_rank: number) => {
+const handlePositionArrow = (
+  entry_rank: number,
+  entry_last_rank: number,
+  classnames = "",
+) => {
   if (entry_rank < entry_last_rank) {
-    return <span className="text-green-400">&#8593;</span>;
+    return (
+      <span className={classNames("text-green-400", classnames)}>&#8593;</span>
+    );
   } else if (entry_rank === entry_last_rank) {
     return <span>&#x2014;</span>;
   }
 
-  return <span className="text-red-500">&#8595;</span>;
+  return (
+    <span className={classNames("text-red-500", classnames)}>&#8595;</span>
+  );
 };
 
 const formatter = new Intl.DateTimeFormat("en-US", {
