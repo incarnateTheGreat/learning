@@ -1,5 +1,6 @@
+import { cn } from "learning/@/lib/utils";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter as FontSans } from "next/font/google";
 
 import Header from "./components/Header";
 import { eventStatus } from "./lib/actions";
@@ -7,7 +8,10 @@ import { useEventStore } from "./store/eventStore";
 
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "FPL RSC App",
@@ -31,7 +35,12 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-black`}>
+      <body
+        className={cn(
+          "bg-background flex min-h-screen flex-col bg-black font-sans text-white antialiased",
+          fontSans.variable,
+        )}
+      >
         <Header />
         <main className="flex flex-1 flex-col p-6 md:flex-row">{children}</main>
         <footer className="border-t border-t-gray-400 px-7 py-2 text-sm">

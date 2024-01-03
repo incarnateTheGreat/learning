@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { Toaster } from "learning/@/components/ui/Toaster/Toaster";
 import LoadingSpinner from "learning/app/components/LoadingSpinner/LoadingSpinner";
 import { Players } from "learning/app/league/components/Players";
 import {
@@ -175,13 +176,14 @@ async function getPlayers(entry = 0) {
           </div>
           {isLive ? (
             <>
-              <LoadingSpinner entry={entry} classnames="mt-2" />
-              <div className="text-md mt-2 bg-gray-900 px-4 py-2 font-semibold uppercase text-green-600">
+              <LoadingSpinner entry={entry} classnames="my-4" />
+              <div className="text-md bg-gray-900 px-4 py-2 font-semibold uppercase text-green-600">
                 Live
               </div>
             </>
           ) : null}
         </div>
+        <Toaster />
       </article>
     </>
   );
