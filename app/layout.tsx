@@ -43,7 +43,7 @@ export default async function RootLayout({
       >
         <Header />
         <main className="flex flex-1 flex-col p-6 md:flex-row">{children}</main>
-        <footer className="border-t border-t-gray-400 px-7 py-2 text-sm">
+        <footer className="border-t-header-footer-border border-t px-7 py-2 text-sm">
           &copy; {new Date().getFullYear()} FPLConnector.
         </footer>
       </body>

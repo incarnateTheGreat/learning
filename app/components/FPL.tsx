@@ -1,3 +1,9 @@
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "learning/@/components/ui/Card/Card";
 import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 
@@ -42,6 +48,41 @@ type ClassicLeagueProps = {
   leagueData: LeagueData[];
 };
 
+type OverallRankProps = {
+  summary_overall_rank: number;
+  overall_entry_rank: number;
+  overall_entry_last_rank: number;
+};
+
+const filterLeague = (leagueToFilter: LeagueData[]) =>
+  leagueToFilter.filter((league) => league.league_type === "x");
+
+const numFormatter = (val: number) => {
+  return new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 0,
+  }).format(val);
+};
+
+const OverallRank = ({
+  summary_overall_rank,
+  overall_entry_rank,
+  overall_entry_last_rank,
+}: OverallRankProps) => {
+  return (
+    <div className="my-4 rounded bg-[#0c1b42] p-2">
+      <span className="text-md font-semibold">Overall:</span>
+      <span className="ml-2">
+        {numFormatter(summary_overall_rank)}
+        {handlePositionArrow(
+          overall_entry_rank,
+          overall_entry_last_rank,
+          "ml-1",
+        )}
+      </span>
+    </div>
+  );
+};
+
 const ClassicLeague = ({ leagueData }: ClassicLeagueProps) => {
   return leagueData.map((league) => {
     const { id, name, entry_rank, entry_last_rank } = league;
@@ -84,42 +125,33 @@ async function loadLeagueData(id: number) {
     const invitationalClassicLeagues = filterLeague(classic);
 
     return (
-      <div className="mr-4 mt-4 w-full rounded border border-gray-800 bg-gray-800 p-4 first:mt-0 last:mr-0 md:mt-0 md:w-1/3">
-        <h1 className="mb-4 border-b text-xl font-semibold">
-          <span className="mr-2">{name}</span>
-          <span>({summary_event_points})</span>
-        </h1>
-        <div className="mb-4 rounded bg-gray-900 p-2">
-          <span className="text-md font-semibold">Overall:</span>
-          <span className="ml-2">
-            {numFormatter(summary_overall_rank)}
-            {handlePositionArrow(
-              overall_entry_rank,
-              overall_entry_last_rank,
-              "ml-1",
-            )}
-          </span>
-        </div>
-        <ClassicLeague leagueData={invitationalClassicLeagues} />
-      </div>
+      <Card className="mr-4 mt-4 w-full first:mt-0 last:mr-0 md:mt-0 md:w-1/3">
+        <CardHeader className="pb-0">
+          <CardTitle className="border-b border-b-slate-200 text-xl font-semibold">
+            <span className="mr-2">{name}</span>
+            <span>({summary_event_points})</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <OverallRank
+            summary_overall_rank={summary_overall_rank}
+            overall_entry_rank={overall_entry_rank}
+            overall_entry_last_rank={overall_entry_last_rank}
+          />
+          <ClassicLeague leagueData={invitationalClassicLeagues} />
+        </CardContent>
+      </Card>
     );
   } catch (err) {
     return (
-      <div className="mr-4 mt-4 w-full rounded border border-gray-800 bg-gray-800 p-4 last:mr-0 md:mt-0 md:w-1/3">
-        Sorry. There is no available data at this time.
-      </div>
+      <Card className="mr-4 mt-4 w-full first:mt-0 last:mr-0 md:mt-0 md:w-1/3">
+        <CardContent className="pt-4">
+          Sorry. There is no available data at this time.
+        </CardContent>
+      </Card>
     );
   }
 }
-
-const filterLeague = (leagueToFilter: LeagueData[]) =>
-  leagueToFilter.filter((league) => league.league_type === "x");
-
-const numFormatter = (val: number) => {
-  return new Intl.NumberFormat("en-US", {
-    maximumFractionDigits: 0,
-  }).format(val);
-};
 
 const LeagueList = async ({ id }: LeaguesList) => {
   noStore();
