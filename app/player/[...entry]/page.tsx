@@ -10,7 +10,7 @@ import {
 } from "learning/app/lib/types";
 import { useEventStore } from "learning/app/store/eventStore";
 import { getCurrentEvent } from "learning/app/utils";
-import { POSITIONS } from "learning/app/utils/constants";
+import { POSITIONS, TEAMS } from "learning/app/utils/constants";
 import { unstable_noStore as noStore } from "next/cache";
 import { headers } from "next/headers";
 import Link from "next/link";
@@ -46,6 +46,7 @@ const getRosterResult = (
       );
 
       const fixture = playerWithLiveData?.explain?.[0]?.fixture;
+      const stats = playerWithLiveData?.explain?.[0]?.stats;
 
       const getMatchData = gameweekFixtures.find((game) => {
         return game.id === fixture;
@@ -58,6 +59,12 @@ const getRosterResult = (
 
       const has_match_started = getMatchData?.started;
 
+      elem["player_team_scoreline"] = `${
+        TEAMS[getMatchData.team_h].short_name
+      } ${getMatchData.team_h_score}-${getMatchData.team_a_score} ${
+        TEAMS[getMatchData.team_a].short_name
+      }`;
+      elem["stats"] = stats;
       elem["has_match_started"] = has_match_started;
       elem["game_is_live"] =
         getMatchData?.started && !getMatchData.finished_provisional;
@@ -171,7 +178,7 @@ async function getPlayers(entry = 0) {
           </div>
         </div>
         <div className="flex flex-1 flex-col items-center md:mt-20 md:basis-2/4 md:items-center">
-          <div className="rounded-2xl border-2 bg-gray-900 p-10 text-7xl font-semibold">
+          <div className="rounded-2xl border-2 border-white bg-gray-900 p-10 text-7xl font-semibold">
             {event_points}
           </div>
           {isLive ? (

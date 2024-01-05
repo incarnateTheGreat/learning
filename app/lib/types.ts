@@ -84,6 +84,12 @@ type PlayerPicksResponse = {
   picks: PlayerPicks[];
 };
 
+type PlayerLiveStats = {
+  identifier: string;
+  points: number;
+  value: number;
+};
+
 type PlayerPicksLive = {
   id: number;
   stats: {
@@ -115,13 +121,7 @@ type PlayerPicksLive = {
   explain: [
     {
       fixture: number;
-      stats: [
-        {
-          identifier: string;
-          points: number;
-          value: number;
-        },
-      ];
+      stats: PlayerLiveStats[];
     },
   ];
 };
@@ -152,6 +152,7 @@ type GameWeekFixtures = {
 type CustomPlayerProps = {
   has_match_started: boolean;
   game_is_live: boolean;
+  player_team_scoreline: string;
 };
 
 type ListOfPlayers = PlayerPicks &
@@ -246,6 +247,7 @@ type ListOfPlayers = PlayerPicks &
     selected_rank_type: number;
     starts_per_90: number;
     clean_sheets_per_90: number;
+    stats: PlayerLiveStats[];
   };
 
 type ListOfPlayersEvents = {
