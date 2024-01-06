@@ -324,6 +324,7 @@ export type {
   ListOfPlayers,
   ListOfPlayersResponse,
   ManagerInfoResponse,
+  PlayerLiveStats,
   PlayerPicks,
   PlayerPicksLive,
   PlayerPicksLiveResponse,

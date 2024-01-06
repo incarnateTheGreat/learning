@@ -168,16 +168,10 @@ async function getPlayers(entry = 0) {
       <h2 className="mb-8 text-xl font-medium">Gameweek {currentEvent}</h2>
       <article className="flex w-full flex-col-reverse px-1.5 py-1 md:flex-row">
         <div className="mt-8 flex-1 basis-2/4 md:m-0">
-          <div className="table w-full">
-            <h2 className="table-caption text-lg font-semibold">Starting XI</h2>
-            <Players players={rosterResult.starters} />
-          </div>
-          <div className="mt-8 table w-full">
-            <h2 className="table-caption text-lg font-semibold">Reserves</h2>
-            <Players players={rosterResult.reserves} />
-          </div>
+          <Players title="Starting XI" players={rosterResult.starters} />
+          <Players title="Reserves" players={rosterResult.reserves} />
         </div>
-        <div className="flex flex-1 flex-col items-center md:mt-20 md:basis-2/4 md:items-center">
+        <div className="flex flex-1 flex-col items-center md:mt-10 md:basis-2/4 md:items-center">
           <div className="rounded-2xl border-2 border-white bg-gray-900 p-10 text-7xl font-semibold">
             {event_points}
           </div>
