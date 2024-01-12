@@ -12,6 +12,7 @@ import { Result } from "learning/app/lib/types";
 import { useEventStore } from "learning/app/store/eventStore";
 import {
   formatted_last_updated,
+  getFPLIds,
   handlePositionArrow,
 } from "learning/app/utils";
 import Link from "next/link";
@@ -22,12 +23,12 @@ type LeagueStandingsProps = {
   last_updated_data: string;
 };
 
-const LeagueStandings = ({
+const LeagueStandings = async ({
   results,
   name,
   last_updated_data,
 }: LeagueStandingsProps) => {
-  const logged_in_user = useEventStore.getState().leagueIDs;
+  const fplIds = await getFPLIds();
 
   return (
     <>
@@ -70,7 +71,7 @@ const LeagueStandings = ({
                   event_total,
                 } = result;
 
-                const is_logged_in_user = logged_in_user.includes(entry);
+                const is_logged_in_user = fplIds.includes(entry);
 
                 const link = `/player/${entry}`;
 

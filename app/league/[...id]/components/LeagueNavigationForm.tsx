@@ -22,7 +22,7 @@ const LeagueNavigationForm = ({
   const [pending, startTransition] = useTransition();
 
   return (
-    <section className="mb-4 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
+    <section className="my-4 w-full px-6 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
       <Link href="/" className="mb-2 inline-flex">
         &laquo; Back to Home
       </Link>

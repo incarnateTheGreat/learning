@@ -3,7 +3,13 @@
 @tailwind utilities;
 
 /* Components */
-@import "./components/LoadingSpinner/LoadingSpinner.module.css";
+@import "./components/PlayerLoaderButton/PlayerLoaderButton.module.css";
+@import "./components/Loading/Loading.module.css";
+
+.public {
+  background: rgb(2,239,255);
+  background: linear-gradient(0deg, rgba(2,239,255,1) 0%, rgba(98,123,255,1) 68%);
+}
  
 @layer base {
   /* Disabling for now */

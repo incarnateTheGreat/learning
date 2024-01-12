@@ -7,12 +7,15 @@ import { refreshPlayerData } from "learning/app/player/[...entry]/actions/action
 import refreshImg from "learning/public/refresh.svg";
 import Image from "next/image";
 
-type LoadingSpinnerProps = {
+type PlayerLoaderButtonProps = {
   entry: number;
   classnames?: string;
 };
 
-const LoadingSpinner = ({ entry, classnames = "" }: LoadingSpinnerProps) => {
+const PlayerLoaderButton = ({
+  entry,
+  classnames = "",
+}: PlayerLoaderButtonProps) => {
   const [pending, startTransition] = useTransition();
   const { toast } = useToast();
 
@@ -29,7 +32,7 @@ const LoadingSpinner = ({ entry, classnames = "" }: LoadingSpinnerProps) => {
           });
         });
       }}
-      className={classNames("loadingSpinner", classnames)}
+      className={classNames("playerLoaderButton", classnames)}
     >
       <Image
         src={refreshImg}
@@ -42,4 +45,4 @@ const LoadingSpinner = ({ entry, classnames = "" }: LoadingSpinnerProps) => {
   );
 };
 
-export default LoadingSpinner;
+export default PlayerLoaderButton;

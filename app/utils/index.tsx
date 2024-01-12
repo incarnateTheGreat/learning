@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { eventStatus } from "learning/app/lib/actions";
+import supabaseServer from "learning/lib/supabaseServer";
 
 import { useEventStore } from "../store/eventStore";
 
@@ -56,9 +57,43 @@ const kickoff_time_formatter = new Intl.DateTimeFormat("en-US", {
 const formatted_kickoff_time = (date: string) =>
   kickoff_time_formatter.format(new Date(date));
 
+const getSupabaseSession = async () => {
+  const {
+    data: { session },
+  } = await supabaseServer().auth.getSession();
+
+  return session;
+};
+
+const getFPLIds = async () => {
+  const session = await getSupabaseSession();
+
+  const fplIDsStore = useEventStore.getState().fplIds ?? [];
+
+  if (session && fplIDsStore.length === 0) {
+    const {
+      data: { fpl_ids },
+    } = await supabaseServer()
+      .from("users")
+      .select("fpl_ids")
+      .eq("email", session?.user?.email)
+      .single();
+
+    useEventStore.setState(() => ({
+      fplIds: fpl_ids,
+    }));
+
+    return fpl_ids;
+  }
+
+  return fplIDsStore;
+};
+
 export {
   formatted_kickoff_time,
   formatted_last_updated,
   getCurrentEvent,
+  getFPLIds,
+  getSupabaseSession,
   handlePositionArrow,
 };

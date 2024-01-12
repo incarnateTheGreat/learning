@@ -1,4 +1,5 @@
 import { cn } from "learning/@/lib/utils";
+import supabaseServer from "learning/lib/supabaseServer";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 
@@ -23,6 +24,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const {
+    data: { session },
+  } = await supabaseServer().auth.getSession();
+
   const stateCurrentEvent = useEventStore.getState().currentEvent;
 
   if (!stateCurrentEvent) {
@@ -41,11 +46,13 @@ export default async function RootLayout({
           fontSans.variable,
         )}
       >
-        <Header />
-        <main className="flex flex-1 flex-col p-6 md:flex-row">{children}</main>
-        <footer className="border-t-header-footer-border border-t px-7 py-2 text-sm">
-          &copy; {new Date().getFullYear()} FPLConnector.
-        </footer>
+        {session ? <Header /> : null}
+        <main className="flex flex-1">{children}</main>
+        {session ? (
+          <footer className="border-t-header-footer-border border-t px-7 py-2 text-sm">
+            &copy; {new Date().getFullYear()} FPLConnector.
+          </footer>
+        ) : null}
       </body>
     </html>
   );

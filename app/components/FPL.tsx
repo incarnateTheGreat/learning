@@ -31,13 +31,14 @@ type LeagueData = {
   entry_last_rank: number;
 };
 
-type FPLResponse = {
+export type FPLResponse = {
   name: string;
   summary_event_points: number;
   leagues: {
     classic: [LeagueData];
   };
   summary_overall_rank: number;
+  detail?: string;
 };
 
 type LeaguesList = {
@@ -125,7 +126,7 @@ async function loadLeagueData(id: number) {
     const invitationalClassicLeagues = filterLeague(classic);
 
     return (
-      <Card className="mr-4 mt-4 w-full first:mt-0 last:mr-0 md:mt-0 md:w-1/3">
+      <Card className="mt-4 md:mt-0">
         <CardHeader className="pb-0">
           <CardTitle className="border-b border-b-slate-200 text-xl font-semibold">
             <span className="mr-2">{name}</span>
@@ -144,7 +145,7 @@ async function loadLeagueData(id: number) {
     );
   } catch (err) {
     return (
-      <Card className="mr-4 mt-4 w-full first:mt-0 last:mr-0 md:mt-0 md:w-1/3">
+      <Card className="mt-4 md:mt-0">
         <CardContent className="pt-4">
           Sorry. There is no available data at this time.
         </CardContent>

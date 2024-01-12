@@ -5,6 +5,7 @@ import { useEventStore } from "learning/app/store/eventStore";
 import { TEAMS } from "learning/app/utils/constants";
 import { unstable_noStore as noStore } from "next/cache";
 
+import Loading from "../components/Loading/Loading";
 import { formatted_kickoff_time, getCurrentEvent } from "../utils";
 
 type GameStatusProps = {
@@ -116,8 +117,8 @@ const Scores = async () => {
   const scores = await getScores(currentEvent);
 
   return (
-    <Suspense fallback={<h2>Loading player...</h2>}>
-      <section className="mb-4 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
+    <Suspense fallback={<Loading type="page" />}>
+      <section className="my-4 w-full px-6 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
         {scores}
       </section>
     </Suspense>

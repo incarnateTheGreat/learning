@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Loading from "learning/app/components/Loading/Loading";
 import { StandingsResponse } from "learning/app/lib/types";
 import { unstable_noStore as noStore } from "next/cache";
 
@@ -51,7 +52,7 @@ const League = async ({ params }: LeagueProps) => {
 
   if (!standingsData)
     return (
-      <div className="mb-4 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
+      <div className="my-4 px-6 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
         Sorry. There is no available league data at this time.
       </div>
     );
@@ -63,13 +64,7 @@ const League = async ({ params }: LeagueProps) => {
   const standings = standingsData.standings;
 
   return (
-    <Suspense
-      fallback={
-        <div className="w-[90%] text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
-          <h2>Loading league...</h2>
-        </div>
-      }
-    >
+    <Suspense fallback={<Loading type="page" />}>
       <LeagueNavigationForm
         page={new_page}
         id={id}

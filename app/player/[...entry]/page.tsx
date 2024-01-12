@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { Toaster } from "learning/@/components/ui/Toaster/Toaster";
-import LoadingSpinner from "learning/app/components/LoadingSpinner/LoadingSpinner";
+import Loading from "learning/app/components/Loading/Loading";
+import PlayerLoaderButton from "learning/app/components/PlayerLoaderButton/PlayerLoaderButton";
 import { Players } from "learning/app/league/components/Players";
 import {
   GameWeekFixtures,
@@ -177,7 +178,7 @@ async function getPlayers(entry = 0) {
           </div>
           {isLive ? (
             <>
-              <LoadingSpinner entry={entry} classnames="my-4" />
+              <PlayerLoaderButton entry={entry} classnames="my-4" />
               <div className="text-md bg-gray-900 px-4 py-2 font-semibold uppercase text-green-600">
                 Live
               </div>
@@ -196,8 +197,8 @@ const Player = async ({ params: { entry } }: PlayerProps) => {
   const players = await getPlayers(entry.at(0));
 
   return (
-    <Suspense fallback={<h2>Loading player...</h2>}>
-      <section className="mb-4 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
+    <Suspense fallback={<Loading type="page" />}>
+      <section className="my-4 w-full px-6 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
         {players}
       </section>
     </Suspense>
