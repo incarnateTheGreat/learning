@@ -1,8 +1,8 @@
 .playerLoaderButton {
     display: flex;
     position: relative;
-    width: 24px;
-    height: 24px;
+    width: 12px;
+    height: 12px;
     align-items: center;
     justify-content: center;
 }
