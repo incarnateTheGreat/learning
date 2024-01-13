@@ -4,7 +4,7 @@ import { useTransition } from "react";
 import classNames from "classnames";
 import Link from "next/link";
 
-import navAction from "../actions/actions";
+import navAction from "../actions";
 
 type NavFormProps = {
   page: number;
