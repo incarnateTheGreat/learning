@@ -67,6 +67,7 @@ type PlayerPicks = {
 };
 
 type PlayerPicksResponse = {
+  active_chip: string;
   detail?: string;
   entry_history: {
     event: number;

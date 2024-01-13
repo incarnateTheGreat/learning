@@ -173,6 +173,11 @@ async function getPlayers(entry = 0) {
           <Players title="Reserves" players={rosterResult.reserves} />
         </div>
         <div className="flex flex-1 flex-col items-center md:mt-10 md:basis-2/4 md:items-center">
+          {playerPicks.active_chip ? (
+            <h3 className="text-md mb-4 bg-gray-900 px-4 py-2 font-semibold capitalize text-green-600">
+              {playerPicks.active_chip}
+            </h3>
+          ) : null}
           <div className="rounded-2xl border-2 border-white bg-gray-900 p-10 text-7xl font-semibold">
             {event_points}
           </div>
