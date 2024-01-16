@@ -79,6 +79,7 @@ const LoginForm = () => {
           <CardContent>
             <div className="flex flex-col">
               <Input
+                type="text"
                 name="email"
                 className="mt-1.5 border border-purple-900"
                 placeholder="Email"

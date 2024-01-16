@@ -1,6 +1,0 @@
-{
-  "databaseURL": "https://Garry-Tsaconas-s-workspace-38kbcp.us-east-1.xata.sh/db/learning",
-  "codegen": {
-    "output": "src/xata.ts"
-  }
-}
