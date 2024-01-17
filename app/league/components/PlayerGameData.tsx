@@ -136,7 +136,7 @@ const PlayerGameData = ({
               </Table>
             ) : (
               <div className="w-full text-center md:ml-auto md:max-w-[60%] md:text-right">
-                Player&rsquo;s game has not started.
+                The player&rsquo;s game has not started.
               </div>
             )}
           </div>
