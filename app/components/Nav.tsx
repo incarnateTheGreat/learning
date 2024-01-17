@@ -17,7 +17,7 @@ const Nav = async () => {
       </li>
       {session ? (
         <li>
-          <LogOut />
+          <LogOut classnames="w-20 font-semibold" />
         </li>
       ) : null}
     </ul>

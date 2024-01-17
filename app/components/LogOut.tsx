@@ -7,17 +7,22 @@ import { logOut } from "../login/actions";
 
 import Loading from "./Loading/Loading";
 
-const LogOut = () => {
+type LogOutProps = {
+  classnames?: string;
+};
+
+const LogOut = ({ classnames = "" }: LogOutProps) => {
   const [loading, setLoading] = useState(false);
 
   return (
     <Button
+      className={classnames}
       onClick={() => {
         setLoading(true);
         logOut();
       }}
     >
-      {loading ? <Loading /> : "Log out"}
+      {loading ? <Loading classnames_divs="dark" /> : "Log out"}
     </Button>
   );
 };

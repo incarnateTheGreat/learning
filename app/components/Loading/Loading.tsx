@@ -1,19 +1,23 @@
 import classNames from "classnames";
 
-type LoadingProps = {
+type LoadingProps = InnerDivsProps & {
   type?: string;
 };
 
-const LoadingSpinner = () => (
+type InnerDivsProps = {
+  classnames_divs?: string;
+};
+
+const LoadingSpinner = ({ classnames_divs }: InnerDivsProps) => (
   <div className="loading">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div className={classnames_divs}></div>
+    <div className={classnames_divs}></div>
+    <div className={classnames_divs}></div>
+    <div className={classnames_divs}></div>
   </div>
 );
 
-const Loading = ({ type = "" }: LoadingProps) => {
+const Loading = ({ type = "", classnames_divs = "" }: LoadingProps) => {
   if (type === "page") {
     return (
       <div
@@ -21,12 +25,12 @@ const Loading = ({ type = "" }: LoadingProps) => {
           "flex w-full items-center justify-center": type === "page",
         })}
       >
-        <LoadingSpinner />
+        <LoadingSpinner classnames_divs={classnames_divs} />
       </div>
     );
   }
 
-  return <LoadingSpinner />;
+  return <LoadingSpinner classnames_divs={classnames_divs} />;
 };
 
 export default Loading;

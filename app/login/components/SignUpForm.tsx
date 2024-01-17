@@ -69,7 +69,7 @@ const SignUpForm = () => {
   return (
     <Card className="flex w-full max-w-[800px] flex-col items-center rounded-none border-none bg-white md:flex-row">
       <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="w-full">
-        <div className="bg-purple">
+        <div className="bg-purple py-2">
           <CardHeader>
             <CardTitle className="text-center text-2xl font-semibold">
               Sign Up
@@ -129,7 +129,7 @@ const SignUpForm = () => {
             {!serverStatus ? (
               <Button
                 type="submit"
-                className="mt-4 w-full bg-purple-900 font-semibold text-white"
+                className="mt-4 w-full bg-purple-900 font-semibold text-white hover:text-purple-900"
               >
                 {loading ? <Loading /> : "Sign Up"}
               </Button>

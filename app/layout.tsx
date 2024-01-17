@@ -42,7 +42,7 @@ export default async function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "bg-background flex min-h-screen flex-col bg-black font-sans text-white antialiased",
+          "flex min-h-screen flex-col bg-background font-sans text-white antialiased",
           fontSans.variable,
         )}
       >

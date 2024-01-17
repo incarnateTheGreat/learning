@@ -70,7 +70,7 @@ const OverallRank = ({
   overall_entry_last_rank,
 }: OverallRankProps) => {
   return (
-    <div className="my-4 rounded bg-[#0c1b42] p-2">
+    <div className="mb-2 mt-4 rounded bg-[#0c1b42] px-6 py-2">
       <span className="text-md font-semibold">Overall:</span>
       <span className="ml-2">
         {numFormatter(summary_overall_rank)}
@@ -89,15 +89,17 @@ const ClassicLeague = ({ leagueData }: ClassicLeagueProps) => {
     const { id, name, entry_rank, entry_last_rank } = league;
 
     return (
-      <div key={id} className="mb-4 px-2">
+      <div key={id} className="mb-4 px-6 last:mb-0">
         <Link
           href={`/league/${id}`}
           className="inline-flex hover:text-gray-300"
         >
           <h2 className="text-md font-semibold">{name}</h2>
         </Link>
-        <p>{numFormatter(entry_rank)}</p>
-        {handlePositionArrow(entry_rank, entry_last_rank)}
+        <p>
+          {numFormatter(entry_rank)}{" "}
+          {handlePositionArrow(entry_rank, entry_last_rank)}
+        </p>
       </div>
     );
   });
@@ -126,14 +128,14 @@ async function loadLeagueData(id: number) {
     const invitationalClassicLeagues = filterLeague(classic);
 
     return (
-      <Card className="mt-4 md:mt-0">
-        <CardHeader className="pb-0">
+      <Card className="rounded py-4 first:mt-0 md:mt-0">
+        <CardHeader className="py-0">
           <CardTitle className="border-b border-b-slate-200 text-xl font-semibold">
             <span className="mr-2">{name}</span>
             <span>({summary_event_points})</span>
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           <OverallRank
             summary_overall_rank={summary_overall_rank}
             overall_entry_rank={overall_entry_rank}
@@ -145,7 +147,7 @@ async function loadLeagueData(id: number) {
     );
   } catch (err) {
     return (
-      <Card className="mt-4 md:mt-0">
+      <Card className="md:mt-0">
         <CardContent className="pt-4">
           Sorry. There is no available data at this time.
         </CardContent>
