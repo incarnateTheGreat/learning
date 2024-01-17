@@ -60,11 +60,7 @@ const getRosterResult = (
 
       const has_match_started = getMatchData?.started;
 
-      elem["player_team_scoreline"] = `${
-        TEAMS[getMatchData.team_h].short_name
-      } ${getMatchData.team_h_score}-${getMatchData.team_a_score} ${
-        TEAMS[getMatchData.team_a].short_name
-      }`;
+      elem["score_block"] = getMatchData;
       elem["stats"] = stats;
       elem["has_match_started"] = has_match_started;
       elem["game_is_live"] =

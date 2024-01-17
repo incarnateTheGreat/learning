@@ -25,13 +25,23 @@ const signUp = async (queryData: FormData): Promise<SignUpReturnType> => {
     cookies: () => cookieStore,
   });
 
-  const { error } = await supabase.auth.signUp({
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.signUp({
     email,
     password,
     options: {
       emailRedirectTo: `${origin}/auth/callback`,
     },
   });
+
+  if (user.identities.length === 0) {
+    return {
+      type: "destructive",
+      message: "User already exists",
+    };
+  }
 
   if (error) {
     return {

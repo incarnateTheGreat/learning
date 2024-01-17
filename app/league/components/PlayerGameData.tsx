@@ -1,5 +1,3 @@
-import classNames from "classnames";
-import { Card } from "learning/@/components/ui/Card/Card";
 import {
   Drawer,
   DrawerContent,
@@ -17,7 +15,8 @@ import {
   TableHeader,
   TableRow,
 } from "learning/@/components/ui/Table/Table";
-import { PlayerLiveStats } from "learning/app/lib/types";
+import ScoreBlock from "learning/app/components/ScoreBlock";
+import { GameWeekFixtures, PlayerLiveStats } from "learning/app/lib/types";
 
 import ImageThumbnail from "./ImageThumbnail";
 
@@ -28,8 +27,7 @@ type PlayerGameDataProps = {
   is_captain: boolean;
   is_vice_captain: boolean;
   team_name: string;
-  game_is_live: boolean;
-  player_team_scoreline: string;
+  score_block: GameWeekFixtures;
   photoExtension: string;
   stats: PlayerLiveStats[];
   total_points: number;
@@ -43,8 +41,7 @@ const PlayerGameData = ({
   is_captain,
   is_vice_captain,
   team_name,
-  game_is_live,
-  player_team_scoreline,
+  score_block,
   photoExtension,
   stats,
   total_points,
@@ -77,63 +74,71 @@ const PlayerGameData = ({
                 {team_name}
               </DrawerDescription>
             </div>
-            <Card
-              className={classNames(
-                "my-2 flex h-10 items-center justify-center rounded-[6px] border-dotted px-3 text-sm md:my-0 md:w-auto md:justify-normal",
-                {
-                  "bg-green-900": game_is_live,
-                },
-              )}
-            >
-              {player_team_scoreline}
-            </Card>
+            <ScoreBlock
+              game={score_block}
+              classnames="mt-4 md:mb-2 md:mt-0 min-w-[300px] md:min-w-[300px]"
+            />
           </div>
           <div className="flex flex-col items-start md:flex-row md:justify-between">
             <ImageThumbnail
               name={`${first_name} ${second_name}`}
               photoExtension={photoExtension}
             />
-            <Table className="w-full md:ml-auto md:max-w-[60%]">
-              <TableHeader className="pointer-events-none">
-                <TableRow>
-                  <TableHead>&nbsp;</TableHead>
-                  <TableHead className="text-right">Value</TableHead>
-                  <TableHead className="text-right">Points</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {stats.map((stat) => {
-                  const { points, value } = stat;
-                  const identifier = stat.identifier.replace("_", " ");
-
-                  return (
-                    <TableRow className="pointer-events-none" key={identifier}>
-                      <TableCell className="text-left capitalize">
-                        {identifier}
-                      </TableCell>
-                      <TableCell className="text-right">{value}</TableCell>
-                      <TableCell className="text-right">{points}</TableCell>
-                    </TableRow>
-                  );
-                })}
-                {is_captain ? (
-                  <TableRow className="pointer-events-none">
-                    <TableCell className="text-left font-bold" colSpan={2}>
-                      Captain
-                    </TableCell>
-                    <TableCell className="text-right font-bold">x2</TableCell>
+            {score_block.started ? (
+              <Table className="w-full md:ml-auto md:max-w-[60%]">
+                <TableHeader className="pointer-events-none">
+                  <TableRow>
+                    <TableHead>&nbsp;</TableHead>
+                    <TableHead className="text-right">Value</TableHead>
+                    <TableHead className="text-right">Points</TableHead>
                   </TableRow>
-                ) : null}
-              </TableBody>
-              <TableFooter>
-                <TableRow className="pointer-events-none">
-                  <TableCell className="text-left" colSpan={2}>
-                    Total
-                  </TableCell>
-                  <TableCell className="text-right">{total_points}</TableCell>
-                </TableRow>
-              </TableFooter>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {stats.map((stat) => {
+                    const { points, value } = stat;
+                    const identifier = stat.identifier.replace("_", " ");
+
+                    return (
+                      <TableRow
+                        className="pointer-events-none"
+                        key={identifier}
+                      >
+                        <TableCell className="text-left font-semibold capitalize">
+                          {identifier}
+                        </TableCell>
+                        <TableCell className="text-right">{value}</TableCell>
+                        <TableCell className="text-right">{points}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {is_captain ? (
+                    <TableRow className="pointer-events-none bg-slate-900">
+                      <TableCell
+                        className="text-left font-semibold"
+                        colSpan={2}
+                      >
+                        Captain
+                      </TableCell>
+                      <TableCell className="text-right font-semibold">
+                        x2
+                      </TableCell>
+                    </TableRow>
+                  ) : null}
+                </TableBody>
+                <TableFooter>
+                  <TableRow className="pointer-events-none">
+                    <TableCell className="text-left" colSpan={2}>
+                      Total
+                    </TableCell>
+                    <TableCell className="text-right">{total_points}</TableCell>
+                  </TableRow>
+                </TableFooter>
+              </Table>
+            ) : (
+              <div className="w-full text-center md:ml-auto md:max-w-[60%] md:text-right">
+                Player&rsquo;s game has not started.
+              </div>
+            )}
           </div>
         </DrawerHeader>
       </DrawerContent>

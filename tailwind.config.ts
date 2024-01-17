@@ -60,6 +60,12 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        white: {
+          DEFAULT: "#fff",
+        },
+        purple: {
+          DEFAULT: "#080325",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -71,7 +71,7 @@ const PlayerTableRow = ({ playerData, label }: TableRowProps) => {
               is_vice_captain,
               stats,
               photo,
-              player_team_scoreline,
+              score_block,
             } = player;
             const team_name = TEAMS[team]?.name ?? "N/A";
             const photoExtension = photo.replace(".jpg", ".png");
@@ -91,8 +91,7 @@ const PlayerTableRow = ({ playerData, label }: TableRowProps) => {
                     is_captain={is_captain}
                     is_vice_captain={is_vice_captain}
                     team_name={team_name}
-                    game_is_live={game_is_live}
-                    player_team_scoreline={player_team_scoreline}
+                    score_block={score_block}
                     photoExtension={photoExtension}
                     stats={stats}
                     total_points={total_points}

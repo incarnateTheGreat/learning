@@ -153,7 +153,7 @@ type GameWeekFixtures = {
 type CustomPlayerProps = {
   has_match_started: boolean;
   game_is_live: boolean;
-  player_team_scoreline: string;
+  score_block: GameWeekFixtures;
 };
 
 type ListOfPlayers = PlayerPicks &
