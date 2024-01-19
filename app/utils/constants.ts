@@ -148,4 +148,7 @@ const POSITIONS = {
   "4": "Forwards",
 };
 
-export { POSITIONS, TEAMS };
+const NAV_CLASSES =
+  "text-foreground/60 transition-colors hover:text-foreground/80";
+
+export { NAV_CLASSES, POSITIONS, TEAMS };

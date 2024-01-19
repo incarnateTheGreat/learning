@@ -31,7 +31,7 @@ export default async function Home() {
       <Suspense fallback={<Loading type="page" />}>
         <section className="mx-auto flex w-[450px] flex-col self-center">
           <h1 className="text-xl font-semibold">
-            Sorry. There are no FPL Ids associated with this account.
+            Please add one or several FPL Manager Ids:
           </h1>
           <ManagerIds />
         </section>

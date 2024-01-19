@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Cross2Icon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import classNames from "classnames";
 import {
   Alert,
   AlertDescription,
@@ -23,7 +24,12 @@ type FormInputs = {
   manager_ids_input: number;
 };
 
-const ManagerIds = () => {
+type ManagerIdsProps = {
+  fpl_ids?: number[];
+  classnames?: string;
+};
+
+const ManagerIds = ({ fpl_ids = [], classnames = "" }: ManagerIdsProps) => {
   const {
     register,
     handleSubmit,
@@ -34,7 +40,7 @@ const ManagerIds = () => {
   } = useForm<FormInputs>();
 
   const [loading, setLoading] = useState(false);
-  const [manager_ids, setManager_ids] = useState<number[]>([]);
+  const [manager_ids, setManager_ids] = useState<number[]>(fpl_ids);
   const manager_id_ref = useRef(null);
 
   const onSubmit = async (data: FieldValues) => {
@@ -67,7 +73,7 @@ const ManagerIds = () => {
   };
 
   return (
-    <Card className="mt-4">
+    <Card className={classNames("mt-4", classnames)}>
       <CardHeader>Manager Ids</CardHeader>
       <CardContent>
         <Label htmlFor="manager_ids">Please enter a Manager Id</Label>
@@ -129,7 +135,7 @@ const ManagerIds = () => {
               updateManagerRow(manager_ids);
             }}
           >
-            Add to site
+            Apply
           </Button>
         ) : null}
       </CardContent>
