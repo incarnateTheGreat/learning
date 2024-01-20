@@ -16,7 +16,7 @@ const SettingsNav = () => {
   const activeSegment = useSelectedLayoutSegment();
 
   return (
-    <nav className="w-44 border-r px-6 py-4">
+    <nav className="w-full border-b px-6 py-4 md:w-44 md:border-r">
       <ul>
         <li>
           {links.map((linkObj) => {

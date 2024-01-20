@@ -5,7 +5,7 @@ import { unstable_noStore as noStore } from "next/cache";
 
 import Loading from "../components/Loading/Loading";
 import ScoreBlock from "../components/ScoreBlock";
-import { getCurrentEvent } from "../utils";
+import { formatted_score_date, getCurrentEvent } from "../utils";
 
 async function getScores(currentEvent = 0) {
   try {
@@ -14,16 +14,44 @@ async function getScores(currentEvent = 0) {
       { next: { revalidate: 15 } },
     );
 
-    const gameweekFixtures: GameWeekFixtures[] =
+    let gameweekFixtures: GameWeekFixtures[] =
       await gameweekFixturesResponse.json();
+
+    gameweekFixtures = gameweekFixtures.reduce((acc, elem) => {
+      elem["date"] = formatted_score_date(elem.kickoff_time);
+
+      acc.push(elem);
+
+      return acc;
+    }, []);
+
+    const gameweekFixturesByDate = Object.groupBy(
+      gameweekFixtures,
+      ({ date }: GameWeekFixtures) => date,
+    );
 
     return (
       <>
         <h1 className="mb-4 text-2xl">Gameweek {currentEvent}</h1>
-        <div className="grid grid-cols-1 gap-y-2 md:grid-cols-3 md:gap-2">
-          {gameweekFixtures.map((game) => (
-            <ScoreBlock key={game.code} game={game} />
-          ))}
+        <div className="grid gap-y-2 md:gap-8">
+          {Object.keys(gameweekFixturesByDate).map((title) => {
+            return (
+              <div key={title}>
+                <h2 className="mb-2 font-semibold">{title}</h2>
+
+                {gameweekFixturesByDate[title].map((game: GameWeekFixtures) => {
+                  return (
+                    <ScoreBlock
+                      key={game.code}
+                      game={game}
+                      classnames="mb-2"
+                      disable_date
+                    />
+                  );
+                })}
+              </div>
+            );
+          })}
         </div>
       </>
     );

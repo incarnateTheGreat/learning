@@ -148,6 +148,7 @@ type GameWeekFixtures = {
   team_h_difficulty: number;
   team_a_difficulty: number;
   pulse_id: number;
+  date: string;
 };
 
 type CustomPlayerProps = {

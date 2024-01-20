@@ -25,52 +25,55 @@ type NavElementsProps = {
   childClassnames?: string;
 };
 
-const NavElements = ({ childClassnames = "" }: NavElementsProps) => {
-  const activeSegment = useSelectedLayoutSegment();
-
-  return (
-    <>
-      {links.map((linkObj) => {
-        const { name, link } = linkObj;
-
-        return (
-          <li key={link} className={childClassnames}>
-            <Link
-              href={`/${link}`}
-              className={classNames(NAV_CLASSES, {
-                "text-foreground/80": activeSegment === link,
-              })}
-            >
-              {name}
-            </Link>
-          </li>
-        );
-      })}
-
-      <li>
-        <LogOut classnames="w-20 font-semibold" />
-      </li>
-    </>
-  );
-};
-
 const Nav = () => {
   const [displayMobileMenu, setDisplayMobileMenu] = useState(false);
+
+  const NavElements = ({ childClassnames = "" }: NavElementsProps) => {
+    const activeSegment = useSelectedLayoutSegment();
+
+    return (
+      <>
+        {links.map((linkObj) => {
+          const { name, link } = linkObj;
+
+          return (
+            <li key={link} className={childClassnames}>
+              <Link
+                href={`/${link}`}
+                className={classNames(NAV_CLASSES, {
+                  "text-foreground/80": activeSegment === link,
+                })}
+                onClick={() => setDisplayMobileMenu(false)}
+              >
+                {name}
+              </Link>
+            </li>
+          );
+        })}
+
+        <li>
+          <LogOut classnames="w-20 font-semibold" />
+        </li>
+      </>
+    );
+  };
 
   return (
     <nav>
       <ul className="flex items-center justify-between">
         <li>
-          <Link href="/" title="FPLConnector">
+          <Link
+            href="/"
+            title="FPLConnector"
+            onClick={() => setDisplayMobileMenu(false)}
+          >
             FPLConnector
           </Link>
         </li>
         <li>
           <HamburgerMenuIcon
-            className="flex md:hidden"
-            onClick={() => {
-              setDisplayMobileMenu(!displayMobileMenu);
-            }}
+            className="flex cursor-pointer md:hidden"
+            onClick={() => setDisplayMobileMenu(!displayMobileMenu)}
           />
           <ul className="hidden items-center gap-6 text-sm md:flex">
             <NavElements />

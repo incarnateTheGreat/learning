@@ -54,6 +54,14 @@ const kickoff_time_formatter = new Intl.DateTimeFormat("en-US", {
   day: "2-digit",
 });
 
+const kickoff_date_formatter = new Intl.DateTimeFormat("en-US", {
+  month: "long",
+  day: "2-digit",
+});
+
+const formatted_score_date = (date: string) =>
+  kickoff_date_formatter.format(new Date(date));
+
 const formatted_kickoff_time = (date: string) =>
   kickoff_time_formatter.format(new Date(date));
 
@@ -92,6 +100,7 @@ const getFPLIds = async () => {
 export {
   formatted_kickoff_time,
   formatted_last_updated,
+  formatted_score_date,
   getCurrentEvent,
   getFPLIds,
   getSupabaseSession,

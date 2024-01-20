@@ -79,7 +79,7 @@ const LeagueStandings = async ({
                   <TableRow
                     key={id}
                     className={classNames("overflow-hidden", {
-                      "bg-[#431919]": is_logged_in_user,
+                      "bg-[#431919] hover:bg-muted/75": is_logged_in_user,
                       "odd:bg-gray-900": !is_logged_in_user,
                     })}
                   >
