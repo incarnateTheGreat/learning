@@ -42,19 +42,19 @@ const ScoreBlock = ({
       <div className="flex basis-full flex-col">
         <div
           className={classNames("mr-1 flex w-full", {
-            "font-bold": finished_provisional && team_a_score > team_h_score,
-          })}
-        >
-          <div>{TEAMS[team_a].name}</div>
-          <div className="ml-auto">{team_a_score}</div>
-        </div>
-        <div
-          className={classNames("mr-1 flex w-full", {
             "font-bold": finished_provisional && team_h_score > team_a_score,
           })}
         >
           <div>{TEAMS[team_h].name}</div>
           <div className="ml-auto">{team_h_score}</div>
+        </div>
+        <div
+          className={classNames("mr-1 flex w-full", {
+            "font-bold": finished_provisional && team_a_score > team_h_score,
+          })}
+        >
+          <div>{TEAMS[team_a].name}</div>
+          <div className="ml-auto">{team_a_score}</div>
         </div>
       </div>
       <GameStatus

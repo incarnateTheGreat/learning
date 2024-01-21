@@ -14,7 +14,7 @@ const GameStatus = ({
   if (!started) {
     const kickoff_time_arr = kickoff_time.split(",");
 
-    if (!disable_date) {
+    if (disable_date) {
       kickoff_time_arr.shift();
     }
 

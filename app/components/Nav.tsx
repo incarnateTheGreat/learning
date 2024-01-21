@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { NAV_CLASSES } from "../utils/constants";
 
@@ -26,7 +27,13 @@ type NavElementsProps = {
 };
 
 const Nav = () => {
+  const pathname = usePathname();
+
   const [displayMobileMenu, setDisplayMobileMenu] = useState(false);
+
+  useEffect(() => {
+    setDisplayMobileMenu(false);
+  }, [pathname]);
 
   const NavElements = ({ childClassnames = "" }: NavElementsProps) => {
     const activeSegment = useSelectedLayoutSegment();
@@ -79,7 +86,7 @@ const Nav = () => {
             <NavElements />
           </ul>
           {displayMobileMenu ? (
-            <ul className="absolute left-0 top-[60px] h-full w-full bg-background px-6 md:hidden">
+            <ul className="absolute left-0 top-[60px] z-10 h-full w-full bg-background px-6 md:hidden">
               <NavElements childClassnames="mb-1 text-base" />
             </ul>
           ) : null}

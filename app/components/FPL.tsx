@@ -32,6 +32,7 @@ type LeagueData = {
 };
 
 export type FPLResponse = {
+  id: number;
   name: string;
   summary_event_points: number;
   leagues: {
@@ -130,9 +131,15 @@ async function loadLeagueData(id: number) {
     return (
       <Card className="rounded py-4 first:mt-0 md:mt-0">
         <CardHeader className="py-0">
-          <CardTitle className="border-b border-b-slate-200 text-xl font-semibold">
-            <span className="mr-2">{name}</span>
-            <span>({summary_event_points})</span>
+          <CardTitle>
+            <Link
+              href={`/player/${id}`}
+              title="Click here to view your team"
+              className="block border-b border-b-slate-200 text-xl font-semibold transition-all hover:border-b-slate-400 hover:text-white/80"
+            >
+              <span className="mr-2">{name}</span>
+              <span>({summary_event_points})</span>
+            </Link>
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">

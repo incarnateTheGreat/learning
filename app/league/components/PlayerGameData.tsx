@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import {
   Drawer,
   DrawerContent,
@@ -100,7 +101,10 @@ const PlayerGameData = ({
 
                     return (
                       <TableRow
-                        className="pointer-events-none"
+                        className={classNames("pointer-events-none", {
+                          "text-yellow-400": identifier === "yellow cards",
+                          "text-red-600": identifier === "red cards",
+                        })}
                         key={identifier}
                       >
                         <TableCell className="text-left font-semibold capitalize">
