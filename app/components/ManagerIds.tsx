@@ -83,6 +83,7 @@ const ManagerIds = ({ fpl_ids = [], classnames = "" }: ManagerIdsProps) => {
               ref={manager_id_ref}
               className="mr-5"
               type="number"
+              placeholder="FPL ID"
               onKeyDown={(e) => {
                 if (e.key === "e" || e.key === "-") {
                   e.preventDefault();
