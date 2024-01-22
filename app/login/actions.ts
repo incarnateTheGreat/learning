@@ -93,7 +93,7 @@ const updateManagerRow = async (fpl_ids: number[]) => {
   redirect("/");
 };
 
-const insertRow = async (email = "") => {
+const insertRow = async () => {
   try {
     const cookieStore = cookies();
 

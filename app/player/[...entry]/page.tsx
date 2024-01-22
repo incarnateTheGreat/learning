@@ -1,6 +1,4 @@
-import { Suspense } from "react";
 import { Toaster } from "learning/@/components/ui/Toaster/Toaster";
-import Loading from "learning/app/components/Loading/Loading";
 import PlayerLoaderButton from "learning/app/components/PlayerLoaderButton/PlayerLoaderButton";
 import { Players } from "learning/app/league/components/Players";
 import {
@@ -11,7 +9,7 @@ import {
 } from "learning/app/lib/types";
 import { useEventStore } from "learning/app/store/eventStore";
 import { getCurrentEvent } from "learning/app/utils";
-import { POSITIONS, TEAMS } from "learning/app/utils/constants";
+import { POSITIONS } from "learning/app/utils/constants";
 import { unstable_noStore as noStore } from "next/cache";
 import { headers } from "next/headers";
 import Link from "next/link";
@@ -198,11 +196,9 @@ const Player = async ({ params: { entry } }: PlayerProps) => {
   const players = await getPlayers(entry.at(0));
 
   return (
-    <Suspense fallback={<Loading type="page" />}>
-      <section className="my-4 w-full px-6 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
-        {players}
-      </section>
-    </Suspense>
+    <section className="my-4 w-full px-6 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
+      {players}
+    </section>
   );
 };
 

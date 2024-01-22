@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-import Loading from "learning/app/components/Loading/Loading";
 import { StandingsResponse } from "learning/app/lib/types";
 import { unstable_noStore as noStore } from "next/cache";
 
@@ -64,14 +62,12 @@ const League = async ({ params }: LeagueProps) => {
   const standings = standingsData.standings;
 
   return (
-    <Suspense fallback={<Loading type="page" />}>
-      <LeagueNavigationForm
-        page={new_page}
-        id={id}
-        has_next={has_next}
-        standings={standings}
-      />
-    </Suspense>
+    <LeagueNavigationForm
+      page={new_page}
+      id={id}
+      has_next={has_next}
+      standings={standings}
+    />
   );
 };
 

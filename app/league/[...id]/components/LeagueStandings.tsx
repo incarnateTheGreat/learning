@@ -9,7 +9,6 @@ import {
   TableRow,
 } from "learning/@/components/ui/Table/Table";
 import { Result } from "learning/app/lib/types";
-import { useEventStore } from "learning/app/store/eventStore";
 import {
   formatted_last_updated,
   getFPLIds,
@@ -80,7 +79,7 @@ const LeagueStandings = async ({
                     key={id}
                     className={classNames("overflow-hidden", {
                       "bg-[#431919] hover:bg-muted/75": is_logged_in_user,
-                      "odd:bg-gray-900": !is_logged_in_user,
+                      "odd:bg-gray-800/30": !is_logged_in_user,
                     })}
                   >
                     <TableCell>

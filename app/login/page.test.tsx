@@ -10,9 +10,6 @@ describe("Login", () => {
     const emailInput: HTMLInputElement = screen.getByPlaceholderText(/email/i);
     const passwordInput: HTMLInputElement =
       screen.getByPlaceholderText(/password/i);
-    const loginButton: HTMLButtonElement = screen.getByRole("button", {
-      name: /login/i,
-    });
 
     fireEvent.change(emailInput, { target: { value: "garry" } });
     fireEvent.change(passwordInput, { target: { value: "password" } });
