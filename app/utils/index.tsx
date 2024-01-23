@@ -97,6 +97,19 @@ const getFPLIds = async () => {
   return fplIDsStore;
 };
 
+const groupBy = (arr: object[] | string[] | number[], key: string) => {
+  return arr.reduce((acc, elem) => {
+    if (!acc[elem[key]]) {
+      acc[elem[key]] = [];
+      acc[elem[key]].push(elem);
+    } else {
+      acc[elem[key]].push(elem);
+    }
+
+    return acc;
+  }, {});
+};
+
 export {
   formatted_kickoff_time,
   formatted_last_updated,
@@ -104,5 +117,6 @@ export {
   getCurrentEvent,
   getFPLIds,
   getSupabaseSession,
+  groupBy,
   handlePositionArrow,
 };

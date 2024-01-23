@@ -3,7 +3,7 @@ import { useEventStore } from "learning/app/store/eventStore";
 import { unstable_noStore as noStore } from "next/cache";
 
 import ScoreBlock from "../components/ScoreBlock";
-import { formatted_score_date, getCurrentEvent } from "../utils";
+import { formatted_score_date, getCurrentEvent, groupBy } from "../utils";
 
 async function getScores(currentEvent = 0) {
   try {
@@ -23,17 +23,11 @@ async function getScores(currentEvent = 0) {
       return acc;
     }, []);
 
-    const gameweekFixturesByDate = Object.groupBy(
-      gameweekFixtures,
-      ({ date }: GameWeekFixtures) => date,
-    );
+    const gameweekFixturesByDate = groupBy(gameweekFixtures, "date");
 
     return (
       <>
-        <h1 className="mb-4 text-2xl">
-          Gameweek {currentEvent} (
-          {Intl.DateTimeFormat().resolvedOptions().timeZone})
-        </h1>
+        <h1 className="mb-4 text-2xl">Gameweek {currentEvent}</h1>
         <div className="grid gap-y-2 md:gap-8">
           {Object.keys(gameweekFixturesByDate).map((title) => {
             return (
