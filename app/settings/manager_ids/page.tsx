@@ -1,17 +1,8 @@
 import ManagerIds from "learning/app/components/ManagerIds";
-import { getSupabaseSession } from "learning/app/utils";
-import supabaseServer from "learning/lib/supabaseServer";
+import { getFPLIds } from "learning/app/utils";
 
 const Manager_Ids = async () => {
-  const session = await getSupabaseSession();
-
-  const {
-    data: { fpl_ids },
-  } = await supabaseServer()
-    .from("users")
-    .select("fpl_ids")
-    .eq("email", session?.user?.email)
-    .single();
+  const fpl_ids = await getFPLIds();
 
   return <ManagerIds fpl_ids={fpl_ids} classnames="max-w-[800px]" />;
 };

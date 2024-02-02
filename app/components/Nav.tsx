@@ -4,14 +4,17 @@ import { useEffect, useState } from "react";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
 import Link from "next/link";
-import { useSelectedLayoutSegment } from "next/navigation";
-import { usePathname } from "next/navigation";
+import { usePathname, useSelectedLayoutSegment } from "next/navigation";
 
 import { NAV_CLASSES } from "../utils/constants";
 
 import LogOut from "./LogOut";
 
 const links = [
+  {
+    name: "Analyze",
+    link: "analyze",
+  },
   {
     name: "Scores",
     link: "scores",
@@ -35,6 +38,14 @@ const Nav = () => {
     setDisplayMobileMenu(false);
   }, [pathname]);
 
+  useEffect(() => {
+    if (displayMobileMenu) {
+      document.getElementsByTagName("body")[0].style.overflow = "hidden";
+    } else {
+      document.getElementsByTagName("body")[0].style.overflow = "auto";
+    }
+  }, [displayMobileMenu]);
+
   const NavElements = ({ childClassnames = "" }: NavElementsProps) => {
     const activeSegment = useSelectedLayoutSegment();
 
@@ -57,9 +68,8 @@ const Nav = () => {
             </li>
           );
         })}
-
         <li>
-          <LogOut classnames="w-20 font-semibold" />
+          <LogOut classnames="mt-8 w-full md:w-20 md:mt-0 font-semibold" />
         </li>
       </>
     );

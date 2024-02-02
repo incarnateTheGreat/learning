@@ -56,7 +56,7 @@ const kickoff_time_formatter = new Intl.DateTimeFormat("en-US", {
 
 const kickoff_date_formatter = new Intl.DateTimeFormat("en-US", {
   month: "long",
-  day: "2-digit",
+  day: "numeric",
 });
 
 const formatted_score_date = (date: string) =>
@@ -81,6 +81,10 @@ const getFPLIds = async () => {
   if (session && fplIDsStore.length === 0) {
     const {
       data: { fpl_ids },
+    }: {
+      data: {
+        fpl_ids: number[];
+      };
     } = await supabaseServer()
       .from("users")
       .select("fpl_ids")

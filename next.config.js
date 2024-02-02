@@ -2,6 +2,11 @@
 const nextConfig = {
     productionBrowserSourceMaps: false,
     swcMinify: true,
+    logging: {
+      fetches: {
+        fullUrl: true,
+      },
+    },
     images: {
         remotePatterns: [
             {
