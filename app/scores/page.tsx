@@ -7,7 +7,6 @@ import { formatted_score_date, getCurrentEvent, groupBy } from "../utils";
 
 async function getScores(currentEvent = 0) {
   try {
-    console.log({ currentEvent });
     const gameweekFixturesResponse: Response = await fetch(
       `https://fantasy.premierleague.com/api/fixtures/?event=${currentEvent}`,
     );
