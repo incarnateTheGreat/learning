@@ -1,16 +1,15 @@
 import { GameWeekFixtures } from "learning/app/lib/types";
 import { useEventStore } from "learning/app/store/eventStore";
+import { unstable_noStore as noStore } from "next/cache";
 
 import ScoreBlock from "../components/ScoreBlock";
 import { formatted_score_date, getCurrentEvent, groupBy } from "../utils";
 
 async function getScores(currentEvent = 0) {
   try {
+    console.log({ currentEvent });
     const gameweekFixturesResponse: Response = await fetch(
       `https://fantasy.premierleague.com/api/fixtures/?event=${currentEvent}`,
-      {
-        cache: "no-cache",
-      },
     );
 
     let gameweekFixtures: GameWeekFixtures[] =
@@ -63,6 +62,8 @@ async function getScores(currentEvent = 0) {
 }
 
 const Scores = async () => {
+  noStore();
+
   let currentEvent = useEventStore.getState().currentEvent;
 
   if (!currentEvent) currentEvent = await getCurrentEvent();
