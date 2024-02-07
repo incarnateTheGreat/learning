@@ -20,6 +20,7 @@ const AnalyzeEntry = async ({ params: { entry } }: AnalyzeEntryProps) => {
   return (
     <section className="relative my-4 w-full px-6 text-sm md:mx-auto md:max-w-[800px] md:text-base">
       <PlayerSearchInput data={predictionData} />
+
       {players.length > 0 ? (
         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
           <GameWeekCard players={players} />

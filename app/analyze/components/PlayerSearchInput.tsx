@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Input } from "learning/@/components/ui/Input/Input";
 import { PredictionDataResponse } from "learning/app/lib/types";
 
@@ -72,6 +72,16 @@ const PlayerSearchInput = ({ data }: PlayerSearchInputProps) => {
     }
   };
 
+  const filterSearchResults = (e: ChangeEvent<HTMLInputElement>) => {
+    const filteredSearchResults = data.filter((elem) => {
+      return elem.searchTerm
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase());
+    });
+
+    setSearchResults(filteredSearchResults);
+  };
+
   useEffect(() => {
     document.addEventListener("keydown", listNavigation);
     document.addEventListener("mouseup", closeSearchResults);
@@ -88,15 +98,7 @@ const PlayerSearchInput = ({ data }: PlayerSearchInputProps) => {
         ref={inputRef}
         placeholder="Search for Player"
         className="mb-2"
-        onChange={(e) => {
-          const res = data.filter((elem) => {
-            return elem.searchTerm
-              .toLowerCase()
-              .includes(e.target.value.toLowerCase());
-          });
-
-          setSearchResults(res);
-        }}
+        onChange={filterSearchResults}
       />
       {searchResults.length > 0 ? (
         <PlayerSearchResults data={searchResults} />
