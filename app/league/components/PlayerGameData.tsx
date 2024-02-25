@@ -75,17 +75,19 @@ const PlayerGameData = ({
                 {team_name}
               </DrawerDescription>
             </div>
-            <ScoreBlock
-              game={score_block}
-              classnames="mt-4 md:mb-2 md:mt-0 min-w-[300px] md:min-w-[300px]"
-            />
+            {score_block ? (
+              <ScoreBlock
+                game={score_block}
+                classnames="mt-4 md:mb-2 md:mt-0 min-w-[300px] md:min-w-[300px]"
+              />
+            ) : null}
           </div>
           <div className="flex flex-col items-start md:flex-row md:justify-between">
             <ImageThumbnail
               name={`${first_name} ${second_name}`}
               photoExtension={photoExtension}
             />
-            {score_block.started ? (
+            {score_block?.started ? (
               <Table className="w-full md:ml-auto md:max-w-[60%]">
                 <TableHeader className="pointer-events-none">
                   <TableRow>

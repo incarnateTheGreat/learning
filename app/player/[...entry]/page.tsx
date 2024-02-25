@@ -8,7 +8,7 @@ import {
   PlayerPicksLive,
 } from "learning/app/lib/types";
 import { useEventStore } from "learning/app/store/eventStore";
-import { getCurrentEvent } from "learning/app/utils";
+import { activeChips, getCurrentEvent } from "learning/app/utils";
 import { POSITIONS } from "learning/app/utils/constants";
 import { unstable_noStore as noStore } from "next/cache";
 import { headers } from "next/headers";
@@ -169,7 +169,7 @@ async function getPlayers(entry = 0) {
         <div className="flex flex-1 flex-col items-center md:mt-10 md:basis-2/4 md:items-center">
           {playerPicks.active_chip ? (
             <h3 className="text-md mb-4 bg-gray-900 px-4 py-2 font-semibold capitalize text-green-600">
-              {playerPicks.active_chip}
+              {activeChips(playerPicks.active_chip)}
             </h3>
           ) : null}
           <div className="rounded-2xl border-2 border-white bg-gray-900 p-10 text-7xl font-semibold">

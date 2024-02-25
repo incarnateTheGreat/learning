@@ -6,6 +6,9 @@ const eventStatus = async () => {
   try {
     const res: Response = await fetch(
       "https://fantasy.premierleague.com/api/event-status/",
+      {
+        cache: "no-cache",
+      },
     );
 
     const resJson: EventStatusResponse = await res.json();

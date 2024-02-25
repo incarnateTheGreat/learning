@@ -114,7 +114,21 @@ const groupBy = (arr: object[] | string[] | number[], key: string) => {
   }, {});
 };
 
+const activeChips = (chip: string) => {
+  switch (chip) {
+    case "freehit":
+      return "Free Hit";
+    case "3xc":
+      return "Triple Captain";
+    case "WC":
+      return "Wildcard";
+    default:
+      return chip;
+  }
+};
+
 export {
+  activeChips,
   formatted_kickoff_time,
   formatted_last_updated,
   formatted_score_date,
