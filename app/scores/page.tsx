@@ -38,10 +38,10 @@ async function getScores(currentEvent = 0) {
                 {gameweekFixturesByDate[title].map((game: GameWeekFixtures) => {
                   return (
                     <ScoreBlock
+                      timeFormat="DATE"
                       key={game.code}
                       game={game}
                       classnames="mb-2"
-                      disable_date
                     />
                   );
                 })}
