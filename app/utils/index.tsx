@@ -22,15 +22,6 @@ const handlePositionArrow = (
   );
 };
 
-const formatter = new Intl.DateTimeFormat("en-US", {
-  hour: "numeric",
-  hour12: false,
-  minute: "numeric",
-  day: "numeric",
-  month: "short",
-  weekday: "long",
-});
-
 const getCurrentEvent = async () => {
   const currentEvent = await eventStatus();
 
@@ -42,9 +33,6 @@ const getCurrentEvent = async () => {
 
   return currentEvent;
 };
-
-const formatted_last_updated = (date: string) =>
-  formatter.format(new Date(date));
 
 const kickoff_time_formatter = new Intl.DateTimeFormat("en-US", {
   hour: "numeric",
@@ -130,7 +118,6 @@ const activeChips = (chip: string) => {
 export {
   activeChips,
   formatted_kickoff_time,
-  formatted_last_updated,
   formatted_score_date,
   getCurrentEvent,
   getFPLIds,

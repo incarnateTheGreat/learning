@@ -77,6 +77,7 @@ const PlayerGameData = ({
             </div>
             {score_block ? (
               <ScoreBlock
+                timeFormat="SHORT"
                 game={score_block}
                 classnames="mt-4 md:mb-2 md:mt-0 min-w-[300px] md:min-w-[300px]"
               />

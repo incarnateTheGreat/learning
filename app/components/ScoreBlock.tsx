@@ -1,22 +1,17 @@
 import classNames from "classnames";
 
 import { GameWeekFixtures } from "../lib/types";
-import { formatted_kickoff_time } from "../utils";
 import { TEAMS } from "../utils/constants";
 
 import GameStatus from "./GameStatus";
 
 type ScoreBlockProps = {
   game: GameWeekFixtures;
+  timeFormat?: "SHORT" | "DATE";
   classnames?: string;
-  disable_date?: boolean;
 };
 
-const ScoreBlock = ({
-  game,
-  classnames = "",
-  disable_date = false,
-}: ScoreBlockProps) => {
+const ScoreBlock = ({ game, classnames = "", timeFormat }: ScoreBlockProps) => {
   const {
     code,
     kickoff_time,
@@ -58,10 +53,10 @@ const ScoreBlock = ({
         </div>
       </div>
       <GameStatus
-        kickoff_time={formatted_kickoff_time(kickoff_time)}
+        kickoff_time={kickoff_time}
         started={started}
         finished_provisional={finished_provisional}
-        disable_date={disable_date}
+        timeFormat={timeFormat}
       />
     </div>
   );

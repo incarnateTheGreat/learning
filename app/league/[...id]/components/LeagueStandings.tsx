@@ -8,12 +8,9 @@ import {
   TableHeader,
   TableRow,
 } from "learning/@/components/ui/Table/Table";
+import DateDisplay from "learning/app/components/DateDisplay";
 import { Result } from "learning/app/lib/types";
-import {
-  formatted_last_updated,
-  getFPLIds,
-  handlePositionArrow,
-} from "learning/app/utils";
+import { getFPLIds, handlePositionArrow } from "learning/app/utils";
 import Link from "next/link";
 
 type LeagueStandingsProps = {
@@ -35,13 +32,13 @@ const LeagueStandings = async ({
         {name}
       </h1>
       <h2 className="mt-1.5 text-sm">
-        <span className="font-semibold">Last Updated:</span>{" "}
-        {formatted_last_updated(last_updated_data)} (local time)
+        <span className="font-semibold">Last Updated: </span>
+        <DateDisplay date={last_updated_data} /> (local time)
       </h2>
       <Table className="mt-4">
         <TableCaption>
-          <span className="font-semibold">Last Updated:</span>{" "}
-          {formatted_last_updated(last_updated_data)} (local time)
+          <span className="font-semibold">Last Updated: </span>
+          <DateDisplay date={last_updated_data} /> (local time)
         </TableCaption>
         {results.length > 0 ? (
           <TableHeader>
