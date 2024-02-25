@@ -48,6 +48,10 @@ const PlayerGameData = ({
   total_points,
   has_match_started,
 }: PlayerGameDataProps) => {
+  if (score_block === undefined) {
+    console.log(first_name, second_name, team_name);
+  }
+
   return (
     <Drawer>
       <DrawerTrigger className="flex w-full items-center justify-between px-2 py-1">
@@ -88,7 +92,7 @@ const PlayerGameData = ({
               name={`${first_name} ${second_name}`}
               photoExtension={photoExtension}
             />
-            {score_block?.started ? (
+            {score_block !== undefined && score_block?.started ? (
               <Table className="w-full md:ml-auto md:max-w-[60%]">
                 <TableHeader className="pointer-events-none">
                   <TableRow>
@@ -141,11 +145,19 @@ const PlayerGameData = ({
                   </TableRow>
                 </TableFooter>
               </Table>
-            ) : (
+            ) : null}
+
+            {score_block !== undefined && !score_block?.started ? (
               <div className="w-full text-center md:ml-auto md:max-w-[60%] md:text-right">
                 The player&rsquo;s game has not started.
               </div>
-            )}
+            ) : null}
+
+            {score_block === undefined ? (
+              <div className="w-full text-center md:ml-auto md:max-w-[60%] md:text-right">
+                This player is not active in this gameweek.
+              </div>
+            ) : null}
           </div>
         </DrawerHeader>
       </DrawerContent>
