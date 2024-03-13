@@ -1,8 +1,10 @@
 import { GameWeekFixtures } from "learning/app/lib/types";
 import { useEventStore } from "learning/app/store/eventStore";
 
-import ScoreBlock from "../components/ScoreBlock";
-import { formatted_score_date, getCurrentEvent, groupBy } from "../utils";
+import ScoreBlock from "../../components/ScoreBlock";
+import { formatted_score_date, getCurrentEvent, groupBy } from "../../utils";
+
+import GameweekSelector from "./components/GameweekSelector";
 
 async function getScores(currentEvent = 0) {
   try {
@@ -62,15 +64,22 @@ async function getScores(currentEvent = 0) {
   }
 }
 
-const Scores = async () => {
+type ScoresProps = {
+  params: { gameweek: number };
+};
+
+const Scores = async ({ params: { gameweek } }: ScoresProps) => {
   let currentEvent = useEventStore.getState().currentEvent;
 
   if (!currentEvent) currentEvent = await getCurrentEvent();
 
-  const scores = await getScores(currentEvent);
+  const gameweekToPass = gameweek?.[0] ?? currentEvent;
+
+  const scores = await getScores(gameweekToPass);
 
   return (
     <section className="my-4 w-full px-6 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
+      <GameweekSelector defaultGameWeek={gameweekToPass} />
       {scores}
     </section>
   );
