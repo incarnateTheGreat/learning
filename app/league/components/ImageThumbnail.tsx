@@ -11,7 +11,7 @@ type ImageThumbnailProps = {
 };
 
 const imageClassnames =
-  "m-auto my-2 h-[200px] w-[200px] md:h-[250px] md:w-[250px] md:my-0";
+  "m-auto md:m-0 my-2 h-[200px] w-[200px] md:h-[250px] md:w-[250px] md:my-0";
 
 const ImageThumbnail = ({ name, photoExtension }: ImageThumbnailProps) => {
   const [loaded, setLoaded] = useState(false);

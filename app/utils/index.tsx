@@ -115,8 +115,13 @@ const activeChips = (chip: string) => {
   }
 };
 
+const calcPlayerPoints = (total_points: number, is_captain: boolean) => {
+  return total_points * (is_captain ? 2 : 1);
+};
+
 export {
   activeChips,
+  calcPlayerPoints,
   formatted_kickoff_time,
   formatted_score_date,
   getCurrentEvent,

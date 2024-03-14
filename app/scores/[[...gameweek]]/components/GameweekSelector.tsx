@@ -19,7 +19,7 @@ const GameweekSelector = ({ defaultGameWeek = "" }: GameweekSelectorProps) => {
   const [_, startTransition] = useTransition();
 
   return (
-    <div className="float-right">
+    <div className="flex justify-end">
       <Select
         defaultValue={defaultGameWeek.toString()}
         onValueChange={(entry) => {

@@ -30,7 +30,6 @@ async function getScores(currentEvent = 0) {
 
     return (
       <>
-        <h1 className="mb-4 text-2xl">Gameweek {currentEvent}</h1>
         <div className="grid gap-y-2 md:gap-8">
           {Object.keys(gameweekFixturesByDate).map((title) => {
             return (
@@ -78,7 +77,7 @@ const Scores = async ({ params: { gameweek } }: ScoresProps) => {
   const scores = await getScores(gameweekToPass);
 
   return (
-    <section className="my-4 w-full px-6 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
+    <section className="my-4 flex w-full flex-col px-6 text-sm md:mx-auto md:w-4/5 md:max-w-[800px] md:text-base">
       <GameweekSelector defaultGameWeek={gameweekToPass} />
       {scores}
     </section>

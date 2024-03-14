@@ -96,6 +96,7 @@ const PlayerTableRow = ({ playerData, label }: TableRowProps) => {
                     stats={stats}
                     total_points={total_points}
                     has_match_started={has_match_started}
+                    player_team={team}
                   />
                 </TableCell>
               </TableRow>

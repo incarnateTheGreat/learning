@@ -8,7 +8,11 @@ import {
   PlayerPicksLive,
 } from "learning/app/lib/types";
 import { useEventStore } from "learning/app/store/eventStore";
-import { activeChips, getCurrentEvent } from "learning/app/utils";
+import {
+  activeChips,
+  calcPlayerPoints,
+  getCurrentEvent,
+} from "learning/app/utils";
 import { POSITIONS } from "learning/app/utils/constants";
 import { unstable_noStore as noStore } from "next/cache";
 import { headers } from "next/headers";
@@ -18,10 +22,6 @@ import { fetchPlayerData } from "../api";
 
 type PlayerProps = {
   params: { entry: number[] };
-};
-
-const calcPlayerPoints = (total_points: number, is_captain: boolean) => {
-  return total_points * (is_captain ? 2 : 1);
 };
 
 const getRosterResult = (
@@ -44,11 +44,19 @@ const getRosterResult = (
         (player) => player.id === elem.id,
       );
 
-      const fixture = playerWithLiveData?.explain?.[0]?.fixture;
-      const stats = playerWithLiveData?.explain?.[0]?.stats;
+      const fixtures = playerWithLiveData?.explain.reduce((acc, elem) => {
+        acc.push(elem.fixture);
 
-      const getMatchData = gameweekFixtures.find((game) => {
-        return game.id === fixture;
+        return acc;
+      }, []);
+      const stats = playerWithLiveData?.explain.reduce((acc, elem) => {
+        acc.push(elem.stats);
+
+        return acc;
+      }, []);
+
+      const getMatchData = gameweekFixtures.filter((game) => {
+        return fixtures.includes(game.id);
       });
 
       const player_total_points = calcPlayerPoints(
@@ -56,13 +64,18 @@ const getRosterResult = (
         playerFieldData.is_captain,
       );
 
-      const has_match_started = getMatchData?.started;
+      const has_match_started = getMatchData.some((game) => {
+        return game.started;
+      });
+
+      const game_is_live = getMatchData.some((game) => {
+        return game.started && !game.finished_provisional;
+      });
 
       elem["score_block"] = getMatchData;
       elem["stats"] = stats;
       elem["has_match_started"] = has_match_started;
-      elem["game_is_live"] =
-        getMatchData?.started && !getMatchData.finished_provisional;
+      elem["game_is_live"] = game_is_live;
 
       // Starters
       if (playerFieldData.position <= 11) {

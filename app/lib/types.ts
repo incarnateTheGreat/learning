@@ -154,7 +154,7 @@ type GameWeekFixtures = {
 type CustomPlayerProps = {
   has_match_started: boolean;
   game_is_live: boolean;
-  score_block: GameWeekFixtures;
+  score_block: GameWeekFixtures[];
 };
 
 type ListOfPlayers = PlayerPicks &
@@ -249,7 +249,7 @@ type ListOfPlayers = PlayerPicks &
     selected_rank_type: number;
     starts_per_90: number;
     clean_sheets_per_90: number;
-    stats: PlayerLiveStats[];
+    stats: PlayerLiveStats[][];
   };
 
 type ListOfPlayersEvents = {
