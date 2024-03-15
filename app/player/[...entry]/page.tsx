@@ -174,6 +174,12 @@ async function getPlayers(entry = 0) {
         </span>
       </h1>
       <h2 className="mb-8 text-xl font-medium">Gameweek {currentEvent}</h2>
+      <h3 className="mb-8 text-xl font-medium">
+        Transfers: {playerPicks.entry_history.event_transfers}{" "}
+        {playerPicks.entry_history.event_transfers_cost > 0
+          ? `(-${playerPicks.entry_history.event_transfers_cost})`
+          : null}
+      </h3>
       <article className="flex w-full flex-col-reverse px-1.5 py-1 md:flex-row">
         <div className="mt-8 flex-1 basis-2/4 md:m-0">
           <Players title="Starting XI" players={rosterResult.starters} />
