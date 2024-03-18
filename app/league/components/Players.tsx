@@ -10,39 +10,12 @@ import {
 import { ListOfPlayers } from "learning/app/lib/types";
 import { POSITIONS, TEAMS } from "learning/app/utils/constants";
 
+import ImageThumbnail from "./ImageThumbnail";
 import PlayerGameData from "./PlayerGameData";
 
 type TableRowProps = {
   playerData: ListOfPlayers[];
   label: string;
-};
-
-type PlayersProps = {
-  title: string;
-  players: ListOfPlayers[][];
-};
-
-const Players = ({ title, players }: PlayersProps) => {
-  return (
-    <section className="mb-8 last:mb-0">
-      <h2 className="text-lg font-semibold text-white">{title}</h2>
-      {Object.keys(POSITIONS).map((position) => {
-        if (
-          players[POSITIONS[position]]?.length === 0 ||
-          !players[POSITIONS[position]]
-        )
-          return;
-
-        return (
-          <PlayerTableRow
-            key={position}
-            playerData={players[POSITIONS[position]]}
-            label={POSITIONS[position]}
-          />
-        );
-      })}
-    </section>
-  );
 };
 
 const PlayerTableRow = ({ playerData, label }: TableRowProps) => {
@@ -83,7 +56,12 @@ const PlayerTableRow = ({ playerData, label }: TableRowProps) => {
                   "bg-green-900": game_is_live,
                 })}
               >
-                <TableCell className="border-b border-gray-400 p-0">
+                <TableCell className="flex border-b border-gray-400 p-0 px-2 pt-1">
+                  <ImageThumbnail
+                    name={`${first_name} ${second_name}`}
+                    photoExtension={photoExtension}
+                    imageClassnames="m-auto h-[75px] w-[75px] md:h-[50px] md:w-[50px]"
+                  />
                   <PlayerGameData
                     web_name={web_name}
                     first_name={first_name}
@@ -109,6 +87,34 @@ const PlayerTableRow = ({ playerData, label }: TableRowProps) => {
         )}
       </TableBody>
     </Table>
+  );
+};
+
+type PlayersProps = {
+  title: string;
+  players: ListOfPlayers[][];
+};
+
+const Players = ({ title, players }: PlayersProps) => {
+  return (
+    <section className="mb-8 last:mb-0">
+      <h2 className="text-lg font-semibold text-white">{title}</h2>
+      {Object.keys(POSITIONS).map((position) => {
+        if (
+          players[POSITIONS[position]]?.length === 0 ||
+          !players[POSITIONS[position]]
+        )
+          return;
+
+        return (
+          <PlayerTableRow
+            key={position}
+            playerData={players[POSITIONS[position]]}
+            label={POSITIONS[position]}
+          />
+        );
+      })}
+    </section>
   );
 };
 
