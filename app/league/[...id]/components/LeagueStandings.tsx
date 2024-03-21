@@ -43,7 +43,7 @@ const LeagueStandings = async ({
         {results.length > 0 ? (
           <TableHeader>
             <TableRow className="pointer-events-none">
-              <TableHead>Rank</TableHead>
+              <TableHead className="pl-4">Rank</TableHead>
               <TableHead className="w-[75%]">Team / Manager</TableHead>
               <TableHead className="w-[10%] p-0 text-center">GW</TableHead>
               <TableHead className="w-0 p-0 text-center">TOT</TableHead>
@@ -79,19 +79,29 @@ const LeagueStandings = async ({
                       "odd:bg-gray-800/30": !is_logged_in_user,
                     })}
                   >
-                    <TableCell>
-                      <span className="mr-2 min-w-[14px]">
-                        {handlePositionArrow(rank, last_rank)}
-                      </span>
-                      <span>{rank}</span>
+                    <TableCell className="pl-2">
+                      <Link href={link} className="flex flex-1 pl-2">
+                        <span className="mr-2 min-w-[14px]">
+                          {handlePositionArrow(rank, last_rank)}
+                        </span>
+                        <span>{rank}</span>
+                      </Link>
                     </TableCell>
                     <TableCell className="p-0">
-                      <Link href={link} className="flex flex-1 p-2">
+                      <Link href={link} className="flex flex-1 p-2 pl-2.5">
                         {entry_name} / {player_name}
                       </Link>
                     </TableCell>
-                    <TableCell className="text-center">{event_total}</TableCell>
-                    <TableCell className="pr-3 text-right">{total}</TableCell>
+                    <TableCell className="p-0 text-center">
+                      <Link href={link} className="px-4">
+                        {event_total}
+                      </Link>
+                    </TableCell>
+                    <TableCell className="pr-2 text-right">
+                      <Link href={link} className="pr-2">
+                        {total}
+                      </Link>
+                    </TableCell>
                   </TableRow>
                 );
               })

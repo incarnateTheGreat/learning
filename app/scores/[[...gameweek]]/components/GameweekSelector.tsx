@@ -36,7 +36,11 @@ const GameweekSelector = ({ defaultGameWeek = "" }: GameweekSelectorProps) => {
             const value = i + 1;
 
             return (
-              <SelectItem key={value} value={value.toString()}>
+              <SelectItem
+                key={value}
+                value={value.toString()}
+                className="cursor-pointer"
+              >
                 Gameweek {value}
               </SelectItem>
             );

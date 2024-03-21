@@ -26,7 +26,18 @@ async function getScores(currentEvent = 0) {
       return acc;
     }, []);
 
-    const gameweekFixturesByDate = groupBy(gameweekFixtures, "date");
+    let gameweekFixturesByDate = groupBy(gameweekFixtures, "date") as object;
+
+    const today = formatted_score_date(new Date().toISOString());
+
+    // Display today's games first, then the rest.
+    if (today in gameweekFixturesByDate) {
+      const temp = gameweekFixturesByDate[today];
+
+      delete gameweekFixturesByDate[today];
+
+      gameweekFixturesByDate = { [today]: temp, ...gameweekFixturesByDate };
+    }
 
     return (
       <>
