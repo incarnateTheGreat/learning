@@ -60,7 +60,7 @@ const PlayerTableRow = ({ playerData, label }: TableRowProps) => {
                   <ImageThumbnail
                     name={`${first_name} ${second_name}`}
                     photoExtension={photoExtension}
-                    imageClassnames="m-auto h-[75px] w-[75px] md:h-[50px] md:w-[50px]"
+                    imageClassnames="h-[75px] w-[75px] md:h-[50px] md:w-[60px]"
                   />
                   <PlayerGameData
                     web_name={web_name}

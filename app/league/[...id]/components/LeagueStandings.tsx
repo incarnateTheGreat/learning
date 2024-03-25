@@ -43,7 +43,7 @@ const LeagueStandings = async ({
         {results.length > 0 ? (
           <TableHeader>
             <TableRow className="pointer-events-none">
-              <TableHead className="pl-4">Rank</TableHead>
+              <TableHead>Rank</TableHead>
               <TableHead className="w-[75%]">Team / Manager</TableHead>
               <TableHead className="w-[10%] p-0 text-center">GW</TableHead>
               <TableHead className="w-0 p-0 text-center">TOT</TableHead>
@@ -75,12 +75,12 @@ const LeagueStandings = async ({
                   <TableRow
                     key={id}
                     className={classNames("overflow-hidden", {
-                      "bg-[#431919] hover:bg-muted/75": is_logged_in_user,
-                      "odd:bg-gray-800/30": !is_logged_in_user,
+                      "bg-[#431919]": is_logged_in_user,
+                      "odd:bg-gray-900": !is_logged_in_user,
                     })}
                   >
-                    <TableCell className="pl-2">
-                      <Link href={link} className="flex flex-1 pl-2">
+                    <TableCell className="p-0">
+                      <Link href={link} className="flex flex-1 p-2">
                         <span className="mr-2 min-w-[14px]">
                           {handlePositionArrow(rank, last_rank)}
                         </span>
@@ -88,17 +88,23 @@ const LeagueStandings = async ({
                       </Link>
                     </TableCell>
                     <TableCell className="p-0">
-                      <Link href={link} className="flex flex-1 p-2 pl-2.5">
+                      <Link href={link} className="flex flex-1 p-2">
                         {entry_name} / {player_name}
                       </Link>
                     </TableCell>
-                    <TableCell className="p-0 text-center">
-                      <Link href={link} className="px-4">
+                    <TableCell className="p-0">
+                      <Link
+                        href={link}
+                        className="flex flex-1 justify-center p-2"
+                      >
                         {event_total}
                       </Link>
                     </TableCell>
-                    <TableCell className="pr-2 text-right">
-                      <Link href={link} className="pr-2">
+                    <TableCell className="p-0">
+                      <Link
+                        href={link}
+                        className="flex flex-1 justify-center p-2"
+                      >
                         {total}
                       </Link>
                     </TableCell>
