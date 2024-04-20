@@ -40,28 +40,26 @@ async function getScores(currentEvent = 0) {
     }
 
     return (
-      <>
-        <div className="grid gap-y-2 md:gap-8">
-          {Object.keys(gameweekFixturesByDate).map((title) => {
-            return (
-              <div key={title}>
-                <h2 className="mb-2 font-semibold">{title}</h2>
+      <div className="grid gap-y-2 md:gap-8">
+        {Object.keys(gameweekFixturesByDate).map((title) => {
+          return (
+            <div key={title}>
+              <h2 className="mb-2 font-semibold">{title}</h2>
 
-                {gameweekFixturesByDate[title].map((game: GameWeekFixtures) => {
-                  return (
-                    <ScoreBlock
-                      timeFormat="DATE"
-                      key={game.code}
-                      game={game}
-                      classnames="mb-2"
-                    />
-                  );
-                })}
-              </div>
-            );
-          })}
-        </div>
-      </>
+              {gameweekFixturesByDate[title].map((game: GameWeekFixtures) => {
+                return (
+                  <ScoreBlock
+                    timeFormat="DATE"
+                    key={game.code}
+                    game={game}
+                    classnames="mb-2"
+                  />
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
     );
   } catch (err) {
     console.log(err);

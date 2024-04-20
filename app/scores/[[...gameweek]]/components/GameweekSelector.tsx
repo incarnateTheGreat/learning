@@ -28,7 +28,7 @@ const GameweekSelector = ({ defaultGameWeek = "" }: GameweekSelectorProps) => {
           });
         }}
       >
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-[180px]" data-testid="gameweek_selector">
           <SelectValue placeholder="Gameweek" />
         </SelectTrigger>
         <SelectContent>
@@ -37,6 +37,7 @@ const GameweekSelector = ({ defaultGameWeek = "" }: GameweekSelectorProps) => {
 
             return (
               <SelectItem
+                data-testid={`gameweek_${value}`}
                 key={value}
                 value={value.toString()}
                 className="cursor-pointer"

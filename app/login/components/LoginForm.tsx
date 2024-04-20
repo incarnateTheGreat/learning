@@ -79,6 +79,7 @@ const LoginForm = () => {
           <CardContent>
             <div className="flex flex-col">
               <Input
+                data-testid="login_email"
                 type="text"
                 name="email"
                 className="mt-1.5 border border-purple-900"
@@ -97,6 +98,7 @@ const LoginForm = () => {
             </div>
             <div className="mt-2 flex flex-col">
               <Input
+                data-testid="login_password"
                 type="password"
                 name="password"
                 placeholder="Password"
