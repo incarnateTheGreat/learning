@@ -1,16 +1,13 @@
 import {
   Tabs,
-  TabsContent,
   TabsList,
   TabsTrigger,
 } from "learning/@/components/ui/Tabs/Tabs";
-import ScoreBlock from "learning/app/components/ScoreBlock";
 import { GameWeekFixtures, PlayerLiveStats } from "learning/app/lib/types";
-import { calcPlayerPoints } from "learning/app/utils";
 import { TEAMS } from "learning/app/utils/constants";
 
 import ImageThumbnail from "./ImageThumbnail";
-import TabularData from "./TabularData";
+import TabContent from "./TabContent";
 
 type BodyProps = {
   first_name: string;
@@ -31,6 +28,16 @@ const Body = ({
   player_team,
   stats,
 }: BodyProps) => {
+  let defaultActiveTab = score_block.findIndex((game) => {
+    const { started, finished_provisional } = game;
+
+    if (started && !finished_provisional) {
+      return game;
+    }
+  });
+
+  defaultActiveTab = defaultActiveTab === 1 ? defaultActiveTab : 0;
+
   return (
     <div className="flex flex-col items-start md:flex-row md:justify-between">
       <ImageThumbnail
@@ -40,43 +47,17 @@ const Body = ({
       />
 
       <Tabs
-        defaultValue={"0"}
+        defaultValue={defaultActiveTab.toString()}
         className="flex min-h-[250px] w-full flex-col justify-between border border-gray-600 p-4 md:basis-1/2"
       >
-        {score_block.length > 0
-          ? score_block.map((game, i) => {
-              const { started } = game;
-
-              const points = stats[i].reduce((acc, elem) => {
-                acc += elem.points;
-
-                return acc;
-              }, 0);
-
-              const player_total_points = calcPlayerPoints(points, is_captain);
-
-              return (
-                <TabsContent key={i} value={i.toString()} className="mt-0">
-                  <ScoreBlock
-                    key={game.code}
-                    timeFormat="SHORT"
-                    game={game}
-                    classnames="mt-4 md:mb-2 md:mt-0 min-w-[300px] md:min-w-[300px]"
-                  />
-
-                  {started ? (
-                    <TabularData
-                      classnames="last:mb-0"
-                      key={second_name}
-                      stats={stats[i]}
-                      is_captain={is_captain}
-                      total_points={player_total_points}
-                    />
-                  ) : null}
-                </TabsContent>
-              );
-            })
-          : null}
+        {score_block.length > 0 ? (
+          <TabContent
+            is_captain={is_captain}
+            score_block={score_block}
+            second_name={second_name}
+            stats={stats}
+          />
+        ) : null}
 
         {score_block.length > 1 ? (
           <TabsList className="mt-4">
