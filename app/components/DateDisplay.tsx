@@ -1,5 +1,15 @@
 "use client";
 
+const isToday = (date: Date) => {
+  const today = new Date();
+
+  return (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  );
+};
+
 interface DateProps {
   date: string;
   timeFormat?: "SHORT" | "DATE";
@@ -17,13 +27,18 @@ const formatter = new Intl.DateTimeFormat("en-US", {
 const DateDisplay = ({ date, timeFormat }: DateProps) => {
   const dateVal = new Date(date);
   const localDate = formatter.format(dateVal);
+  const gameIsToday = isToday(dateVal);
 
   if (timeFormat === "SHORT") {
     const kickoff_time_data = localDate.split(",").slice(1);
 
-    const kickoff_time_html = kickoff_time_data.map((e, key) => (
-      <span key={key}>{e}</span>
-    ));
+    const kickoff_time_html = kickoff_time_data.map((e, i) => {
+      if (i === 0 && gameIsToday) {
+        return <span key={i}>Today</span>;
+      }
+
+      return <span key={i}>{e}</span>;
+    });
 
     return <time dateTime={dateVal.toISOString()}>{kickoff_time_html}</time>;
   }

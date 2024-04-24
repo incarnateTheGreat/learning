@@ -41,10 +41,12 @@ const Body = ({
 
       <Tabs
         defaultValue={"0"}
-        className="w-full border border-gray-600 p-4 md:basis-1/2"
+        className="flex min-h-[250px] w-full flex-col justify-between border border-gray-600 p-4 md:basis-1/2"
       >
         {score_block.length > 0
           ? score_block.map((game, i) => {
+              const { started } = game;
+
               const points = stats[i].reduce((acc, elem) => {
                 acc += elem.points;
 
@@ -62,20 +64,22 @@ const Body = ({
                     classnames="mt-4 md:mb-2 md:mt-0 min-w-[300px] md:min-w-[300px]"
                   />
 
-                  <TabularData
-                    classnames="last:mb-0"
-                    key={second_name}
-                    stats={stats[i]}
-                    is_captain={is_captain}
-                    total_points={player_total_points}
-                  />
+                  {started ? (
+                    <TabularData
+                      classnames="last:mb-0"
+                      key={second_name}
+                      stats={stats[i]}
+                      is_captain={is_captain}
+                      total_points={player_total_points}
+                    />
+                  ) : null}
                 </TabsContent>
               );
             })
           : null}
 
         {score_block.length > 1 ? (
-          <TabsList className="mt-4 flex w-full p-0">
+          <TabsList className="mt-4">
             {score_block.map((game, i) => {
               const opponent =
                 game.team_h === player_team
@@ -86,7 +90,7 @@ const Body = ({
                 <TabsTrigger
                   key={i}
                   value={i.toString()}
-                  className="h-full flex-1"
+                  className="h-full flex-1 border"
                 >
                   v. {opponent}
                 </TabsTrigger>
