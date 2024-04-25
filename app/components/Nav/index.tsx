@@ -2,32 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import classNames from "classnames";
 import Link from "next/link";
-import { usePathname, useSelectedLayoutSegment } from "next/navigation";
+import { usePathname } from "next/navigation";
 
-import { NAV_CLASSES } from "../utils/constants";
-
-import LogOut from "./LogOut";
-
-const links = [
-  {
-    name: "Analyze",
-    link: "analyze",
-  },
-  {
-    name: "Scores",
-    link: "scores",
-  },
-  {
-    name: "Settings",
-    link: "settings",
-  },
-];
-
-type NavElementsProps = {
-  childClassnames?: string;
-};
+import NavElements from "./NavElements";
 
 const Nav = () => {
   const pathname = usePathname();
@@ -45,35 +23,6 @@ const Nav = () => {
       document.getElementsByTagName("body")[0].style.overflow = "auto";
     }
   }, [displayMobileMenu]);
-
-  const NavElements = ({ childClassnames = "" }: NavElementsProps) => {
-    const activeSegment = useSelectedLayoutSegment();
-
-    return (
-      <>
-        {links.map((linkObj) => {
-          const { name, link } = linkObj;
-
-          return (
-            <li key={link} className={childClassnames}>
-              <Link
-                href={`/${link}`}
-                className={classNames(NAV_CLASSES, {
-                  "text-foreground/80": activeSegment === link,
-                })}
-                onClick={() => setDisplayMobileMenu(false)}
-              >
-                {name}
-              </Link>
-            </li>
-          );
-        })}
-        <li>
-          <LogOut classnames="mt-8 w-full md:w-20 md:mt-0 font-semibold" />
-        </li>
-      </>
-    );
-  };
 
   return (
     <nav>
@@ -93,11 +42,14 @@ const Nav = () => {
             onClick={() => setDisplayMobileMenu(!displayMobileMenu)}
           />
           <ul className="hidden items-center gap-6 text-sm md:flex">
-            <NavElements />
+            <NavElements setDisplayMobileMenu={setDisplayMobileMenu} />
           </ul>
           {displayMobileMenu ? (
             <ul className="absolute left-0 top-[60px] z-10 h-full w-full bg-background px-6 md:hidden">
-              <NavElements childClassnames="mb-1 text-base" />
+              <NavElements
+                setDisplayMobileMenu={setDisplayMobileMenu}
+                childClassnames="mb-1 text-base"
+              />
             </ul>
           ) : null}
         </li>

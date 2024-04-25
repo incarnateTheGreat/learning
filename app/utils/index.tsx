@@ -119,6 +119,12 @@ const calcPlayerPoints = (total_points: number, is_captain: boolean) => {
   return total_points * (is_captain ? 2 : 1);
 };
 
+const numFormatter = (val: number) => {
+  return new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 0,
+  }).format(val);
+};
+
 export {
   activeChips,
   calcPlayerPoints,
@@ -129,4 +135,5 @@ export {
   getSupabaseSession,
   groupBy,
   handlePositionArrow,
+  numFormatter,
 };

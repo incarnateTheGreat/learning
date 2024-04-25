@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { Input } from "learning/@/components/ui/Input/Input";
 import { PredictionDataResponse } from "learning/app/lib/types";
 
@@ -62,7 +62,7 @@ const PlayerSearchInput = ({ data }: PlayerSearchInputProps) => {
     }
   };
 
-  const closeSearchResults = (e: MouseEvent) => {
+  const closeSearchResults = useCallback((e: MouseEvent) => {
     const container = document.getElementById("searchResults");
     const target = e.target as HTMLElement;
 
@@ -70,17 +70,20 @@ const PlayerSearchInput = ({ data }: PlayerSearchInputProps) => {
       setSearchResults([]);
       inputRef.current.value = "";
     }
-  };
+  }, []);
 
-  const filterSearchResults = (e: ChangeEvent<HTMLInputElement>) => {
-    const filteredSearchResults = data.filter((elem) => {
-      return elem.searchTerm
-        .toLowerCase()
-        .includes(e.target.value.toLowerCase());
-    });
+  const filterSearchResults = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const filteredSearchResults = data.filter((elem) => {
+        return elem.searchTerm
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase());
+      });
 
-    setSearchResults(filteredSearchResults);
-  };
+      setSearchResults(filteredSearchResults);
+    },
+    [data],
+  );
 
   useEffect(() => {
     document.addEventListener("keydown", listNavigation);

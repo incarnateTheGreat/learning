@@ -148,7 +148,22 @@ const POSITIONS = {
   "4": "Forwards",
 };
 
+const LINKS = [
+  {
+    name: "Analyze",
+    link: "analyze",
+  },
+  {
+    name: "Scores",
+    link: "scores",
+  },
+  {
+    name: "Settings",
+    link: "settings",
+  },
+];
+
 const NAV_CLASSES =
   "text-foreground/60 transition-colors hover:text-foreground/80";
 
-export { NAV_CLASSES, POSITIONS, TEAMS };
+export { LINKS,NAV_CLASSES, POSITIONS, TEAMS };
