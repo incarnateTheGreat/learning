@@ -10,6 +10,8 @@ import {
 } from "learning/@/components/ui/Table/Table";
 import { PlayerLiveStats } from "learning/app/lib/types";
 
+import TabularDataRow from "./TablularDataRow";
+
 type TablurDataProps = {
   stats: PlayerLiveStats[];
   is_captain: boolean;
@@ -33,26 +35,7 @@ const TabularData = ({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {stats.map((stat) => {
-          const { points, value } = stat;
-          const identifier = stat.identifier.replace("_", " ");
-
-          return (
-            <TableRow
-              className={classNames("pointer-events-none", {
-                "text-yellow-400": identifier === "yellow cards",
-                "text-red-600": identifier === "red cards",
-              })}
-              key={identifier}
-            >
-              <TableCell className="w-1/2 text-left font-semibold capitalize">
-                {identifier}
-              </TableCell>
-              <TableCell className="text-right">{value}</TableCell>
-              <TableCell className="text-right">{points}</TableCell>
-            </TableRow>
-          );
-        })}
+        <TabularDataRow stats={stats} />
         {is_captain ? (
           <TableRow className="pointer-events-none bg-slate-900">
             <TableCell className="text-left font-semibold" colSpan={2}>

@@ -1,8 +1,7 @@
-import { StandingsResponse } from "learning/app/lib/types";
 import { unstable_noStore as noStore } from "next/cache";
 
 import LeagueNavigationForm from "./components/LeagueNavigationForm";
-import LeagueStandings from "./components/LeagueStandings";
+import LoadStandingsData from "./LoadStandingsData";
 
 type LeagueProps = {
   params: {
@@ -10,43 +9,12 @@ type LeagueProps = {
   };
 };
 
-async function loadStandings(id: number, page_number = 1) {
-  try {
-    const res: Response = await fetch(
-      `https://fantasy.premierleague.com/api/leagues-classic/${id}/standings?page_standings=${page_number}`,
-    );
-
-    const standingsData: StandingsResponse = await res.json();
-
-    const {
-      last_updated_data,
-      league: { name },
-      standings: { page, results, has_next },
-    } = standingsData;
-
-    return {
-      data: {
-        standings: { new_page: page, has_next },
-      },
-      standings: (
-        <LeagueStandings
-          results={results}
-          last_updated_data={last_updated_data}
-          name={name}
-        />
-      ),
-    };
-  } catch (err) {
-    return null;
-  }
-}
-
 const League = async ({ params }: LeagueProps) => {
   noStore();
 
   const [id, page_number = 1] = params.id;
 
-  const standingsData = await loadStandings(id, page_number);
+  const standingsData = await LoadStandingsData(id, page_number);
 
   if (!standingsData)
     return (
