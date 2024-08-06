@@ -62,8 +62,6 @@ async function getScores(currentEvent = 0) {
       </div>
     );
   } catch (err) {
-    console.log(err);
-
     return (
       <div className="grid grid-cols-1 gap-y-2 md:grid-cols-3 md:gap-2">
         Sorry. No scores.

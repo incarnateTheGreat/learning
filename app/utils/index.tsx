@@ -23,7 +23,11 @@ const handlePositionArrow = (
 };
 
 const getCurrentEvent = async () => {
-  const currentEvent = await eventStatus();
+  let currentEvent = await eventStatus();
+
+  if (currentEvent === 0) {
+    currentEvent = 1;
+  }
 
   if (!useEventStore.getState().currentEvent) {
     useEventStore.setState(() => ({
