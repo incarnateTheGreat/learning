@@ -19,8 +19,8 @@ const ClassicLeague = ({ leagueData }: ClassicLeagueProps) => {
           <h2 className="text-md font-semibold">{name}</h2>
         </Link>
         <p>
-          {numFormatter(entry_rank)}{" "}
-          {handlePositionArrow(entry_rank, entry_last_rank)}
+          {entry_rank ? numFormatter(entry_rank) : null}{" "}
+          {entry_rank ? handlePositionArrow(entry_rank, entry_last_rank) : "--"}
         </p>
       </div>
     );

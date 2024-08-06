@@ -46,7 +46,7 @@ const LoadLeagueData = async (id: number) => {
               className="block border-b border-b-slate-200 text-xl font-semibold transition-all hover:border-b-slate-400 hover:text-white/80"
             >
               <span className="mr-2">{name}</span>
-              <span>({summary_event_points})</span>
+              <span>({summary_event_points ?? 0})</span>
             </Link>
           </CardTitle>
         </CardHeader>
