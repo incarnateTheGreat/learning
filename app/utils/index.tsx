@@ -9,6 +9,12 @@ const handlePositionArrow = (
   entry_last_rank: number,
   classnames = "",
 ) => {
+  const stateCurrentEvent = useEventStore.getState().currentEvent;
+
+  if (stateCurrentEvent === 1) {
+    return <span>&#x2014;</span>;
+  }
+
   if (entry_rank < entry_last_rank) {
     return (
       <span className={classNames("text-green-400", classnames)}>&#8593;</span>
