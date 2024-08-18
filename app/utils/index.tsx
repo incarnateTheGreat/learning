@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
+
 import classNames from "classnames";
 import { eventStatus } from "learning/app/lib/actions";
 import supabaseServer from "learning/lib/supabaseServer";

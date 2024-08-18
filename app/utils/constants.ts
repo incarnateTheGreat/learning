@@ -10,7 +10,16 @@
 //   return acc
 // }, {})
 
-const TEAMS = {
+type TeamsType = {
+  [key: number]: {
+    id: number;
+    name: string;
+    short_name: string;
+    pulse_id: number;
+  };
+};
+
+const TEAMS: TeamsType = {
   1: { id: 1, name: "Arsenal", short_name: "ARS", pulse_id: 1 },
   2: { id: 2, name: "Aston Villa", short_name: "AVL", pulse_id: 2 },
   3: { id: 3, name: "Bournemouth", short_name: "BOU", pulse_id: 127 },
@@ -33,7 +42,11 @@ const TEAMS = {
   20: { id: 20, name: "Wolves", short_name: "WOL", pulse_id: 38 },
 };
 
-const POSITIONS = {
+type PositionsType = {
+  [key: string]: any;
+};
+
+const POSITIONS: PositionsType = {
   "1": "Goalkeepers",
   "2": "Defenders",
   "3": "Midfielders",

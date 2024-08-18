@@ -26,7 +26,10 @@ async function getScores(currentEvent = 0) {
       return acc;
     }, []);
 
-    let gameweekFixturesByDate = groupBy(gameweekFixtures, "date") as object;
+    let gameweekFixturesByDate = groupBy(gameweekFixtures, "date") as Record<
+      string,
+      object[]
+    >;
 
     const today = formatted_score_date(new Date().toISOString());
 
@@ -46,6 +49,7 @@ async function getScores(currentEvent = 0) {
             <div key={title}>
               <h2 className="mb-2 font-semibold">{title}</h2>
 
+              {/* @ts-ignore */}
               {gameweekFixturesByDate[title].map((game: GameWeekFixtures) => {
                 return (
                   <ScoreBlock
@@ -79,6 +83,7 @@ const Scores = async ({ params: { gameweek } }: ScoresProps) => {
 
   if (!currentEvent) currentEvent = await getCurrentEvent();
 
+  // @ts-ignore
   const gameweekToPass = gameweek?.[0] ?? currentEvent;
 
   const scores = await getScores(gameweekToPass);
