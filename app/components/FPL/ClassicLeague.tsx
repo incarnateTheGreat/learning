@@ -7,7 +7,9 @@ type ClassicLeagueProps = {
 };
 
 const ClassicLeague = ({ leagueData }: ClassicLeagueProps) => {
-  return leagueData.map((league) => {
+  const leagueDataSorted = leagueData.sort((a,b) => a.entry_rank - b.entry_rank)
+
+  return leagueDataSorted.map((league) => {
     const { id, name, entry_rank, entry_last_rank } = league;
 
     return (
