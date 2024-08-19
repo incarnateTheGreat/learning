@@ -41,9 +41,11 @@ export default async function Home() {
 
   return (
     <Suspense fallback={<Loading type="page" />}>
-      <section className="mx-6 my-4 grid w-full grid-cols-1 gap-4 md:grid-cols-3">
-        {data?.fpl_ids.map((id: number) => <LeagueList key={id} id={id} />)}
-      </section>
+      <div className="flex w-full flex-col">
+        <section className="mx-6 my-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+          {data?.fpl_ids.map((id: number) => <LeagueList key={id} id={id} />)}
+        </section>
+      </div>
     </Suspense>
   );
 }

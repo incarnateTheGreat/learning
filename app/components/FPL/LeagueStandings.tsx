@@ -2,15 +2,19 @@ import { LeagueData } from "learning/app/lib/types";
 import { handlePositionArrow, numFormatter } from "learning/app/utils";
 import Link from "next/link";
 
-type ClassicLeagueProps = {
+type LeagueStandingsProps = {
   leagueData: LeagueData[];
 };
 
-const ClassicLeague = ({ leagueData }: ClassicLeagueProps) => {
-  const leagueDataSorted = leagueData.sort((a,b) => a.entry_rank - b.entry_rank)
+const LeagueStandings = ({ leagueData }: LeagueStandingsProps) => {
+  const leagueDataSorted = leagueData.sort(
+    (a, b) => a.entry_rank - b.entry_rank,
+  );
 
   return leagueDataSorted.map((league) => {
     const { id, name, entry_rank, entry_last_rank } = league;
+
+    if (entry_rank === 0) return;
 
     return (
       <div key={id} className="mb-4 px-6 last:mb-0">
@@ -29,4 +33,4 @@ const ClassicLeague = ({ leagueData }: ClassicLeagueProps) => {
   });
 };
 
-export default ClassicLeague;
+export default LeagueStandings;

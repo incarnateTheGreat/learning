@@ -138,6 +138,9 @@ const numFormatter = (val: number) => {
   }).format(val);
 };
 
+const getLeagueData = (leagueToFilter: LeagueData[], league_type: string) =>
+  leagueToFilter.filter((league) => league.league_type === league_type);
+
 export {
   activeChips,
   calcPlayerPoints,
@@ -149,4 +152,5 @@ export {
   groupBy,
   handlePositionArrow,
   numFormatter,
+  getLeagueData,
 };
